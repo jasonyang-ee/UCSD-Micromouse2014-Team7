@@ -3,34 +3,29 @@
 void setup()
 {
 //-------------------------------------------------------  pin setup  -------------------------------------------------------//
-  pinMode(sensorFrontLeft,INPUT_ANALOG);      //int sensorFrontLeft
-  pinMode(sensorFrontRight,INPUT_ANALOG);     //int sensorFrontRight
-  pinMode(sensorDiagonalLeft,INPUT_ANALOG);   //int sensorDiagonalLeft
-  pinMode(sensorDiagonalRight,INPUT_ANALOG);  //int sensorDiagonalRight
-  pinMode(sensorSideLeft,INPUT_ANALOG);       //int sensorSideLeft
-  pinMode(sensorSideRight,INPUT_ANALOG);      //int sensorSideRight
+  pinMode(sensorLeft,INPUT_ANALOG);
+  pinMode(sensorFrontLeft,INPUT_ANALOG);
+  pinMode(sensorFront,INPUT_ANALOG);
+  pinMode(sensorFrontRight,INPUT_ANALOG);
+  pinMode(sensorRight,INPUT_ANALOG);
 
-  pinMode(ledOne,OUTPUT);                     //int led
-  pinMode(ledTwo,OUTPUT);                     //int led
-  pinMode(ledThree,OUTPUT);                   //int led
+  pinMode(IRLED1,OUTPUT);
+  pinMode(IRLED2,OUTPUT);
+  pinMode(IRLED3,OUTPUT);
+  
+  pinMode(redLED,OUTPUT);
+  pinMode(blueLED,OUTPUT);
+  pinMode(greenLED,OUTPUT);
 
-  pinMode(PWMLeft, PWM);                      //PWM control of Left Motor
-  pinMode(motorLeft1, OUTPUT);		      //direction control of Left Motor
-  pinMode(motorLeft2, OUTPUT);		      //direction control of Left Motor
-  pinMode(PWMRight, PWM);                     //PWM control of Right Motor
-  pinMode(motorRight1, OUTPUT);  	      //direction control of Right Motor
-  pinMode(motorRight2, OUTPUT);		      //direction control of Right Motor
-  pwmWrite(PWMLeft, 0);                       //initialize speed of 
-  pwmWrite(PWMRight, 0);                      //both motors to 0
+  pinMode(motorLeft, PWM);
+  pinMode(motorLeft2, PWM);
+  pinMode(motorRight1, PWM);
+  pinMode(motorRight2, PWM);
 
   pinMode(encoderLeftCLK, INPUT);             //Left encoder clock pin
   pinMode(encoderLeftDirc, INPUT);            //Left encoder direction pin
   pinMode(encoderRightCLK, INPUT);	      //Right encoder clock pin
   pinMode(encoderRightDirc, INPUT);	      //Right encoder direction pin
-  
-  digitalWrite(ledOne, HIGH);
-  digitalWrite(ledTwo, HIGH);
-  digitalWrite(ledThree, HIGH);
   
 //-------------------------------------------------------  Interrupts  -------------------------------------------------------//
   Timer2.pause();                                      // to set timer clock, please go global.h to change timerRate
@@ -60,8 +55,7 @@ void encoderInterruptsRight(void)
 
 void globalInterrupt(void)
 {
-  timerCount = (timerCount++) % (1000000/timerRate);  //refresh for every 1 sec
-
+  timerCurrent = millis();
 }
 
 void loop()

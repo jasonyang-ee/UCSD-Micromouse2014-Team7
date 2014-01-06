@@ -27,14 +27,6 @@ volatile double distDiagonalRight;
 volatile double distSideLeftLast;
 volatile double distSideRightLast;
 
-//Sensor Voltage
-volatile int voltFrontLeft;
-volatile int voltFrontRight;
-volatile int voltSideLeft;
-volatile int voltSideRight;
-volatile int voltDiagonalLeft;
-volatile int voltDiagonalRight;
-
 //Motor Speed
 volatile int speedLeft = 0;
 volatile int speedRight = 0;
@@ -49,7 +41,8 @@ volatile Cell *cellCurrent;
 volatile int compass;
 
 //=====================  Timer  =====================//
-volatile int timerCount = 0;
+volatile int timer = 0;
+volatile int timerCurrent = 0;
 
 //=====================  PID Error  =====================//
 //decelerate

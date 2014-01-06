@@ -4,20 +4,24 @@
 
 class Debug{
 public:
-  void sensor();
-  void encoder();
-  void selecter();
-  void buttom();
-  void timer();
+  void allSystem();
 private:
   bool tic;
 };
 
 //==========================================  Function Definition  ==========================================//
-void Debug::timer()
+void Debug::allSystem()
 {
-
+  timer = timerCurrent;
+  while( timmerCurrent-timer < 2000 ) motorDrive('L',fullPWM/10);
+  while( timmerCurrent-timer < 2000 ) motorDrive('R',fullPWM/10);
+  
+  
+  
+  
 }
+
+
 
 
 

@@ -14,6 +14,16 @@
 #define back 2
 #define left 3
 
+//=====================  Mode Description  =====================//
+#define debug 1
+#define goTest 2
+#define turnTest 3
+
+//=====================  Stage Description  =====================//
+#define prep 1
+#define driving 2
+#define breaking 3
+
 //=====================  Wall Description  =====================//
 
 //=====================  Hardware Description  =====================//
@@ -30,9 +40,9 @@
 #define sensorRight 7
 
 //IR LED
-#define IRLED1 12
-#define IRLED2 13
-#define IRLED3 14
+#define LedIR1 12
+#define LedIR2 13
+#define LedIR3 14
 
 //Motor
 #define motorLeft1 11  // Forward = 1H+2L, Break = L+L, Reverse = 1L+2H
@@ -47,8 +57,8 @@
 #define encoderRightCLK 23
 
 //Indicator LED
-#define redLED 15
-#define blueLED 16
-#define greenLED 17
+#define LedRed 15
+#define LedBlue 16
+#define LedGreen 17
 
 #endif

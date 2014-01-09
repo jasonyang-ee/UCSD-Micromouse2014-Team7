@@ -11,9 +11,6 @@
 //interrupt period = 1us * timerRate
 #define timerRate 1000
 
-//minimun distance between wall and mouse in one cell
-#define distWallExist 14
-#define distStop 10
 
 //=====================  Motor Constant  =====================//
 //speed constant
@@ -23,7 +20,6 @@
 #define speedTurn 10000
 
 //=====================  Encoder Constant  =====================//
-#define countRotateSide 124
-#define countRotateBack 260
+
 
 #endif

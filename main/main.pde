@@ -9,23 +9,26 @@ void setup()
   pinMode(sensorFrontRight,INPUT_ANALOG);
   pinMode(sensorRight,INPUT_ANALOG);
 
-  pinMode(IRLED1,OUTPUT);
-  pinMode(IRLED2,OUTPUT);
-  pinMode(IRLED3,OUTPUT);
+  pinMode(LedIR1,OUTPUT);
+  pinMode(LedIR2,OUTPUT);
+  pinMode(LedIR3,OUTPUT);
   
-  pinMode(redLED,OUTPUT);
-  pinMode(blueLED,OUTPUT);
-  pinMode(greenLED,OUTPUT);
+  pinMode(LedRed,OUTPUT);
+  pinMode(LedBlue,OUTPUT);
+  pinMode(LedGreen,OUTPUT);
 
-  pinMode(motorLeft, PWM);
+  pinMode(motorLeft1, PWM);
   pinMode(motorLeft2, PWM);
   pinMode(motorRight1, PWM);
   pinMode(motorRight2, PWM);
 
-  pinMode(encoderLeftCLK, INPUT);             //Left encoder clock pin
-  pinMode(encoderLeftDirc, INPUT);            //Left encoder direction pin
-  pinMode(encoderRightCLK, INPUT);	      //Right encoder clock pin
-  pinMode(encoderRightDirc, INPUT);	      //Right encoder direction pin
+  pinMode(encoderLeftCLK, INPUT);     //Left encoder clock pin
+  pinMode(encoderLeftDirc, INPUT);    //Left encoder direction pin
+  pinMode(encoderRightCLK, INPUT);    //Right encoder clock pin
+  pinMode(encoderRightDirc, INPUT);   //Right encoder direction pin
+  
+  pinMode(BOARD_LED_PIN, OUTPUT);
+  pinMode(BOARD_BUTTON_PIN, INPUT);
   
 //-------------------------------------------------------  Interrupts  -------------------------------------------------------//
   Timer2.pause();                                      // to set timer clock, please go global.h to change timerRate
@@ -43,22 +46,54 @@ void setup()
 
 void encoderInterruptsLeft(void)
 {
-  if(digitalRead(encoderLeftDirc) == HIGH)  countLeft++;
-  else  countLeft--;
+  if(digitalRead(encoderLeftDirc) == HIGH)  rotationLeft++;
+  else  rotationLeft--;
 }
 
 void encoderInterruptsRight(void)
 {
-  if(digitalRead(encoderRightDirc) == LOW)  countRight++;
-  else  countRight--;
+  if(digitalRead(encoderRightDirc) == LOW)  rotationRight++;
+  else  rotationRight--;
 }
 
 void globalInterrupt(void)
 {
-  timerCurrent = millis();
+  F.globalInterrupt();
+  if(stage == driving)
+  {
+    //get new sensor data
+    //calculate sensor value
+    //calculate PID value
+  }
 }
 
 void loop()
 {
+  //accept button input to decide mode
   
+  
+  if(mode == debug)
+  {
+    //print out some raw data of all device
+  }
+  else if(mode == goTest)
+  {
+    if(stage == prep)
+    {
+      //initialize sensor
+      //accept start signal
+    }
+    else if(stage == driving)
+    {
+      
+    }
+    else if(stage == breaking)
+    {
+      
+    }
+  }
+  else if(mode == turnTest)
+  {
+    
+  }
 }

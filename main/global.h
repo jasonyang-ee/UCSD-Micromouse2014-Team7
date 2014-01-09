@@ -3,17 +3,11 @@
 #include "define.h"
 #include "config.h"
 #include "cell.h"
-#include "hardware.h"
-#include "search.h"
-#include "motion.h"
-#include "debug.h"
+#include "function.h"
 
-
-volatile Search S;
-volatile Hardware H;
-volatile Motion M;
-volatile Debug D;
-volatile Cell C[mazeSize][mazeSize];  //CELL cell[y][x];
+//=====================  Objects  =====================//
+Function F;
+Cell C[mazeSize][mazeSize];  //CELL cell[y][x];
 
 //=====================  Hardware  =====================//
 //Sensor Distance
@@ -33,8 +27,8 @@ volatile int speedRight = 0;
 volatile int speedBase = 0;
 
 //Encoder Counts
-volatile int countLeft = 0;
-volatile int countRight = 0;
+volatile int rotationLeft = 0;
+volatile int rotationRight = 0;
 
 //=====================  Cell  =====================//
 volatile Cell *cellCurrent;
@@ -44,19 +38,10 @@ volatile int compass;
 volatile int timer = 0;
 volatile int timerCurrent = 0;
 
-//=====================  PID Error  =====================//
-//decelerate
+//=====================  Loop Control  =====================//
+volatile int stage = 0;
+volatile int mode = 0;
 
-//straight followBoth
 
-//straight followRight
-
-//straight followLeft
-
-//straight fishBone
-
-//rotate
-
-//angular velocity
 
 #endif

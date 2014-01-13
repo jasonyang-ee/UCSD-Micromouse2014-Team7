@@ -14,16 +14,6 @@
 #define back 2
 #define left 3
 
-//=====================  Mode Description  =====================//
-#define debug 1
-#define goTest 2
-#define turnTest 3
-
-//=====================  Stage Description  =====================//
-#define prep 1
-#define driving 2
-#define breaking 3
-
 //=====================  Wall Description  =====================//
 
 //=====================  Hardware Description  =====================//

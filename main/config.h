@@ -2,6 +2,16 @@
 #define CONFIG_H
 #include "global.h"
 
+//=====================  Mode Description  =====================//
+#define debug 0
+#define goTest 1
+#define turnTest 2
+
+//=====================  Stage Description  =====================//
+#define prep 0
+#define driving 1
+#define breaking 2
+
 //=====================  Maze Constant  =====================//
 //Cell per side of the maze
 #define mazeSize 16

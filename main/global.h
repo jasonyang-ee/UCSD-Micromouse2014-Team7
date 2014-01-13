@@ -38,7 +38,7 @@ int buttonTime = 0;
 
 //=====================  Loop Control  =====================//
 int stage = 0;
-int mode = 1;
+int mode = 0;
 int buttonState = 0;
 int lastButtonState = 0;
 

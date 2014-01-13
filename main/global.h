@@ -5,6 +5,7 @@
 #include "cell.h"
 #include "function.h"
 
+
 //=====================  Objects  =====================//
 Function F;
 Cell C[mazeSize][mazeSize];  //CELL cell[y][x];
@@ -14,33 +15,33 @@ Cell C[mazeSize][mazeSize];  //CELL cell[y][x];
 volatile double distFront;
 volatile double distFrontLeft;
 volatile double distFrontRight;
-volatile double distSideLeft;
-volatile double distSideRight;
-volatile double distDiagonalLeft;
-volatile double distDiagonalRight;
-volatile double distSideLeftLast;
-volatile double distSideRightLast;
+volatile double distLeft;
+volatile double distRight;
 
 //Motor Speed
 volatile int speedLeft = 0;
 volatile int speedRight = 0;
-volatile int speedBase = 0;
+int speedBase = 0;
 
 //Encoder Counts
 volatile int rotationLeft = 0;
 volatile int rotationRight = 0;
 
 //=====================  Cell  =====================//
-volatile Cell *cellCurrent;
-volatile int compass;
+Cell *cellCurrent;
+int compass;
 
 //=====================  Timer  =====================//
 volatile int timer = 0;
 volatile int timerCurrent = 0;
+int buttonTime = 0;
 
 //=====================  Loop Control  =====================//
-volatile int stage = 0;
-volatile int mode = 0;
+int stage = 0;
+int mode = 1;
+int buttonState = 0;
+int lastButtonState = 0;
+
 
 
 

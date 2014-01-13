@@ -4,12 +4,19 @@
 
 class Function{
 public:
-//=====================  Hardware Driver  =====================//
+//=====================  Mode Select  =====================//
+  void buttonInput();
+//=====================  Motor Driver  =====================//
   void motorDrive(char,int);
 //=====================  Debug  =====================//
+  void debugSystem();
+  void debugData();
+  void debugMaze();
+//=====================  Interrupt  =====================//
   void globalInterrupt();
-  void allSystem();
-//=====================  Motion  =====================//
+//=====================  I2C  =====================//
+  int I2CRead();
+  bool I2cWrite(int);
 };
 
 

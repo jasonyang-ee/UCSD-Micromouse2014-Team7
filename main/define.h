@@ -30,6 +30,9 @@
 #define fullPWM 65535
 #define fullAnalog 4095
 
+//=====================  I2C Address  =====================//
+#define switchAddress 0x38
+
 
 //=====================  Pin Define  =====================//
 //IR Reciever

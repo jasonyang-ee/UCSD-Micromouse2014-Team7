@@ -1,4 +1,5 @@
 #include "global.h"
+#include "Wire.h"
 
 void setup()
 {
@@ -29,6 +30,7 @@ void setup()
   
   pinMode(BOARD_LED_PIN, OUTPUT);
   pinMode(BOARD_BUTTON_PIN, INPUT);
+  Wire.begin(0,1);
   
 //-------------------------------------------------------  Interrupts  -------------------------------------------------------//
   Timer2.pause();                                      // to set timer clock, please go global.h to change timerRate
@@ -70,13 +72,27 @@ void globalInterrupt(void)
 void loop()
 {
   //accept button input to decide mode
-  
-  //Test Test Austin's Test
+  F.buttonInput();
   
   if(mode == debug)
   {
-    //print out some raw data of all device
+    //press button to display
+    if(millis() - buttonTime > 200)
+    {
+      buttonState = digitalRead(BOARD_BUTTON_PIN);
+      if(buttonState != lastButtonState)
+        if (buttonState == HIGH)
+        {
+          //functions here
+          F.debugSystem();
+          F.debugData();
+          F.debugMaze();
+        }
+      lastButtonState = buttonState;
+      buttonTime = millis();
+    }
   }
+      
   else if(mode == goTest)
   {
     if(stage == prep)

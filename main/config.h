@@ -15,6 +15,8 @@
 //=====================  Maze Constant  =====================//
 //Cell per side of the maze
 #define mazeSize 16
+#define GOAL_X   8 
+#define GOAL_Y   8
 
 //=====================  Sensor Constant  =====================//
 //counter++ for every 1us, and interrupt for every 1000 count

@@ -16,28 +16,6 @@
 
 // Maze:
 
-#define WALL_NORTH 1
-#define WALL_EAST 2
-#define WALL_SOUTH 4
-#define WALL_WEST 8
-
-typedef struct{
-	uint8_t walls   :4;
-	uint8_t visited :1;
-	uint8_t is_goal :1;
-	uint8_t         :2;
-	uint8_t fill_order;
-} cell;
-
-typedef struct{
-	uint8_t x:4;
-	uint8_t y:4;
-} loc;
-
-#define DIR_DX(d) d&1-d&2;
-#define DIR_DY(d) (~d)&1-d&2;
-#define CELL_IN_DIR(maze, cur, dir) maze[cur/16+DIR_DX(dir)][cur%16+DIR_DY(dir)]
-
 //=====================  Hardware Description  =====================//
 #define fullPWM 65535
 #define fullAnalog 4095

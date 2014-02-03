@@ -1,7 +1,5 @@
 #ifndef MOUSE_H
 #define MOUSE_H
-#include "global.h"
-
 
 // turn 90 degrees counterclockwise
 void turn_ccw(){

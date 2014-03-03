@@ -17,6 +17,15 @@ typedef struct{
 	uint8_t fill_order;
 } cell;
 
+void print_maze();
+void set_cell_wall(uint8_t c, uint8_t d);
+void generate_maze(int seed, uint8_t difficulty);
+void setup_maze(int size, uint8_t g);
+void move_dir(uint8_t req_dir);
+void flood_fill(uint8_t cur, uint8_t dist);
+void solve_maze();
+
+
 #define DIR_DX(d) (((d)&1)-((d)&2))%(-2)
 #define DIR_DY(d) (((~(d))&1)-((d)&2))%(-2)
 #define LOC_X(l) ((l)>>4)
@@ -61,7 +70,8 @@ void print_maze(){
 		}
 		printf("\n|");
 		for(uint8_t x=0;x<maze_size;x++){
-			printf(" %-2X",maze[LOC(x,y)].fill_order);
+            if(maze[LOC(x,y)].fill_order==255) printf(" NA");
+			else printf(" %-2d",maze[LOC(x,y)].fill_order);
 			if(maze[LOC(x,y)].walls & WALL_EAST) printf(" |");
 			else printf("  ");
 		}
@@ -88,7 +98,7 @@ void set_cell_wall(uint8_t c, uint8_t d){
 		case 3: if((c&0xF0)==0) return; break;
 		case 2: if((c%16)==0) return; break;
 	}
-
+    
 	// set the appropriate wall of the adjacent cell
 	CELL_IN_DIR(c, d).walls |= (1<<((d+2)%4));
 }
@@ -98,10 +108,31 @@ void set_cell_wall(uint8_t c, uint8_t d){
 // is related to difficulty
 void generate_maze(int seed, uint8_t difficulty){
 	random_seed = seed;
-	for(uint8_t x = 0; x<15; x++){
-		for(uint8_t y = 0; y<15; y++){
+	for(uint8_t x = 0; x<maze_size; x++){
+		for(uint8_t y = 0; y<maze_size; y++){
+            //skip 4 goal cells
+            if(x==(maze_size/2) || x==(maze_size/2)-1)
+                if(y==(maze_size/2) || y==(maze_size/2)-1)
+                    continue;
+            //setup wall for other cells
 			if(!(RAND%(10-difficulty))) set_cell_wall(LOC(x,y),0);
 			if(!(RAND%(10-difficulty))) set_cell_wall(LOC(x,y),1);
+		}
+	}
+    
+    //ensure every post has at least one wall attaches
+    for(uint8_t x = 1; x<(maze_size); x++){
+		for(uint8_t y = 1; y<(maze_size); y++){
+            //skip 4 goal cells
+            if(x==(maze_size/2) || x==(maze_size/2)-1)
+                if(y==(maze_size/2) || y==(maze_size/2)-1)
+                    continue;
+            //set wall for other cells
+			if(!((maze[LOC(x,y)].walls & WALL_WEST) |
+                (maze[LOC(x-1,y)].walls & WALL_SOUTH) |
+                (maze[LOC(x-1,y-1)].walls & WALL_EAST) |
+                (maze[LOC(x,y-1)].walls & WALL_NORTH)) )
+                set_cell_wall(LOC(x,y), 2);
 		}
 	}
 }
@@ -109,8 +140,8 @@ void generate_maze(int seed, uint8_t difficulty){
 
 void setup_maze(int size, uint8_t g){
 	maze_size = size;	
-	for(uint8_t x = 0; x<16; x++){
-		for(uint8_t y = 0; y<16; y++){
+	for(uint8_t x = 0; x<maze_size; x++){
+		for(uint8_t y = 0; y<maze_size; y++){
 			if(y==0) set_cell_wall(LOC(x,y),2);
 			if(x==0) set_cell_wall(LOC(x,y),3);
 			if(y==maze_size-1) set_cell_wall(LOC(x,y),0);
@@ -122,7 +153,16 @@ void setup_maze(int size, uint8_t g){
 	// and set up goal
 	goal = g;
 	maze[goal].is_goal = 1;
-
+    //set up goal cell wall
+    //common out the goal entrance
+    //set_cell_wall(LOC(maze_size/2, maze_size/2), 0);
+    set_cell_wall(LOC(maze_size/2, maze_size/2), 1);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2), 0);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2), 3);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2-1), 2);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2-1), 3);
+    set_cell_wall(LOC(maze_size/2, maze_size/2-1), 1);
+    set_cell_wall(LOC(maze_size/2, maze_size/2-1), 2);
 }
 
 // turn to and move in the specified direction
@@ -150,10 +190,10 @@ void flood_fill(uint8_t cur, uint8_t dist){
 	for(uint8_t i=0;i<4;i++){
 		// If there is no wall in that direction
 		if(!(maze[cur].walls & (1<<i))
-			// and the cell in that direction has too high a distance
-			&& CELL_IN_DIR(cur,i).fill_order > dist+1)				
-				// start the flood fill from that cell 
-				flood_fill(LOC_IN_DIR(cur,i), dist+1);
+           // and the cell in that direction has too high a distance
+           && CELL_IN_DIR(cur,i).fill_order > dist+1)				
+            // start the flood fill from that cell 
+            flood_fill(LOC_IN_DIR(cur,i), dist+1);
 	}
 }
 
@@ -184,11 +224,11 @@ void solve_maze(){
 		for(uint8_t i=0;i<4;i++){
 			// if there is no wall in that direction,
 			if(!(maze[mouse_loc].walls & (1<<i))
-				// and the cell in that direction has a better distance,
-				&& CELL_IN_DIR(mouse_loc,i).fill_order < best){
-					// record its direction
-					best = CELL_IN_DIR(mouse_loc,i).fill_order;
-					best_dir = i;
+               // and the cell in that direction has a better distance,
+               && CELL_IN_DIR(mouse_loc,i).fill_order < best){
+                // record its direction
+                best = CELL_IN_DIR(mouse_loc,i).fill_order;
+                best_dir = i;
 			}
 		}
 		if(best == 255){

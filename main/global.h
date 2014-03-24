@@ -2,10 +2,8 @@
 #define GLOBAL_H
 #include "define.h"
 #include "config.h"
-#include "cell.h"
 #include "function.h"
 #include "maze.h"
-#include "mouse.h"
 
 
 //=====================  Objects  =====================//

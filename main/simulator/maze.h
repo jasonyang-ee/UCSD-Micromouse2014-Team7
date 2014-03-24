@@ -1,11 +1,8 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-//==========  Direction Code  ==========//
-//            N          0
-//          W   E  ==  3   1
-//            S          2
-//======================================//
+#include <stdint.h>
+#include <stdio.h>
 
 #define WALL_NORTH 1
 #define WALL_EAST 2
@@ -20,11 +17,12 @@ typedef struct{
 	uint8_t fill_order;
 } cell;
 
-void set_cell_wall(uint8_t, uint8_t);
-void generate_maze(int, uint8_t);
-void setup_maze(int, uint8_t);
-void move_dir(uint8_t);
-void flood_fill(uint8_t, uint8_t);
+void print_maze();
+void set_cell_wall(uint8_t c, uint8_t d);
+void generate_maze(int seed, uint8_t difficulty);
+void setup_maze(int size, uint8_t g);
+void move_dir(uint8_t req_dir);
+void flood_fill(uint8_t cur, uint8_t dist);
 void solve_maze();
 
 
@@ -44,6 +42,49 @@ static uint8_t maze_size;
 static uint32_t random_seed;
 static cell maze[256];
 
+// display the maze, showing
+void print_maze(){
+	uint8_t y=maze_size;
+	do {
+		y--;
+		for(uint8_t x=0;x<maze_size;x++){
+			printf("+");
+			if(maze[LOC(x,y)].walls & WALL_NORTH) printf("----");
+			else printf("    ");
+		}
+		printf("+\n|");
+		for(uint8_t x=0;x<maze_size;x++){
+			printf("  ");
+			uint8_t dir = 255;
+			if(mouse_loc == LOC(x,y)) dir = mouse_dir%4;
+			if(maze[LOC(x,y)].visited) dir = maze[LOC(x,y)].vis_dir;
+			switch(dir){
+				case 0: printf("^"); break;
+				case 1: printf(">"); break;
+				case 2: printf("v"); break;
+				case 3: printf("<"); break;
+				default: printf(" ");
+			}
+			if(maze[LOC(x,y)].walls & WALL_EAST) printf(" |");
+			else printf("  ");
+		}
+		printf("\n|");
+		for(uint8_t x=0;x<maze_size;x++){
+            if(maze[LOC(x,y)].fill_order==255) printf(" NA");
+			else printf(" %-2d",maze[LOC(x,y)].fill_order);
+			if(maze[LOC(x,y)].walls & WALL_EAST) printf(" |");
+			else printf("  ");
+		}
+		printf("\n");
+	} while (y);
+	for(uint8_t x=0;x<maze_size;x++){
+		printf("+");
+		if(maze[LOC(x,0)].walls & WALL_SOUTH) printf("----");
+		else printf("    ");
+	}
+	printf("+\n");
+}
+
 // set the wall of a cell
 // and the corresponding wall of the cell behind it
 void set_cell_wall(uint8_t c, uint8_t d){
@@ -62,6 +103,40 @@ void set_cell_wall(uint8_t c, uint8_t d){
 	CELL_IN_DIR(c, d).walls |= (1<<((d+2)%4));
 }
 
+// randomly generate a maze starting from the given seed
+// the probability that a cell will have a wall in a certain direction
+// is related to difficulty
+void generate_maze(int seed, uint8_t difficulty){
+	random_seed = seed;
+	for(uint8_t x = 0; x<maze_size; x++){
+		for(uint8_t y = 0; y<maze_size; y++){
+            //skip 4 goal cells
+            if(x==(maze_size/2) || x==(maze_size/2)-1)
+                if(y==(maze_size/2) || y==(maze_size/2)-1)
+                    continue;
+            //setup wall for other cells
+			if(!(RAND%(10-difficulty))) set_cell_wall(LOC(x,y),0);
+			if(!(RAND%(10-difficulty))) set_cell_wall(LOC(x,y),1);
+		}
+	}
+    
+    //ensure every post has at least one wall attaches
+    for(uint8_t x = 1; x<(maze_size); x++){
+		for(uint8_t y = 1; y<(maze_size); y++){
+            //skip 4 goal cells
+            if(x==(maze_size/2) || x==(maze_size/2)-1)
+                if(y==(maze_size/2) || y==(maze_size/2)-1)
+                    continue;
+            //set wall for other cells
+			if(!((maze[LOC(x,y)].walls & WALL_WEST) |
+                (maze[LOC(x-1,y)].walls & WALL_SOUTH) |
+                (maze[LOC(x-1,y-1)].walls & WALL_EAST) |
+                (maze[LOC(x,y-1)].walls & WALL_NORTH)) )
+                set_cell_wall(LOC(x,y), 2);
+		}
+	}
+}
+
 
 void setup_maze(int size, uint8_t g){
 	maze_size = size;	
@@ -78,6 +153,17 @@ void setup_maze(int size, uint8_t g){
 	// and set up goal
 	goal = g;
 	maze[goal].is_goal = 1;
+    //set up goal cell wall
+    //common out the goal entrance
+    //set_cell_wall(LOC(maze_size/2, maze_size/2), 0);
+    set_cell_wall(LOC(maze_size/2, maze_size/2), 1);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2), 0);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2), 3);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2-1), 2);
+    set_cell_wall(LOC(maze_size/2-1, maze_size/2-1), 3);
+    set_cell_wall(LOC(maze_size/2, maze_size/2-1), 1);
+    set_cell_wall(LOC(maze_size/2, maze_size/2-1), 2);
+}
 
 // turn to and move in the specified direction
 void move_dir(uint8_t req_dir){

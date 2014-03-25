@@ -9,6 +9,16 @@ void setup()
   pinMode(Led1,OUTPUT);
   pinMode(Led2,OUTPUT);
   pinMode(Led3,OUTPUT);
+  //motor
+  pinMode(motorLeft1, OUTPUT);
+  pinMode(motorLeft2, OUTPUT);
+  pinMode(motorLeftSTBY, OUTPUT);
+  pinMode(motorLeftPWM, PWM);
+  pinMode(motorRight1, OUTPUT);
+  pinMode(motorRight2, OUTPUT);
+  pinMode(motorRightSTBY, OUTPUT);
+  pinMode(motorRightPWM, PWM);
+  
   //Encoder
   pinMode(encoderLeftCLK, INPUT);
   pinMode(encoderLeftDir, INPUT);
@@ -20,12 +30,26 @@ void setup()
   
   attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
+  
+  Wire.begin(0,1);
 }
 
 void loop()
 {
-  board_botton();
-  SerialUSB.print(wheelCountRight);
+  motorLeft_Foward(5000);
+  motorRight_Foward(5000);
+    
+  
+//  int *temp = get_I2C();
+//  SerialUSB.print("x: ");
+//  SerialUSB.print(temp[0]);
+//  SerialUSB.print(" y: ");
+//  SerialUSB.print(temp[1]);
+//  SerialUSB.print(" z: ");
+//  SerialUSB.println(temp[2]);
+  
+  
+  SerialUSB.print(wheelCountLeft);
   SerialUSB.print("\t");
-  SerialUSB.println(wheelCountLeft);
+  SerialUSB.println(wheelCountRight);
 }

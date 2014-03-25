@@ -36,8 +36,23 @@ void setup()
 
 void loop()
 {
-  motorLeft_Foward(5000);
-  motorRight_Foward(5000);
+  motorLeft_Break();
+  motorRight_Break();
+  int temp=0;
+  
+  Wire.beginTransmission(0x53);
+  Wire.send(0x32);
+  Wire.requestFrom(0x53, 1);
+  if(Wire.available())
+  {
+    SerialUSB.print("hi");
+    temp = Wire.receive();
+  }
+
+  int confirm = Wire.endTransmission();
+
+  SerialUSB.println(confirm);
+    
     
   
 //  int *temp = get_I2C();
@@ -49,7 +64,7 @@ void loop()
 //  SerialUSB.println(temp[2]);
   
   
-  SerialUSB.print(wheelCountLeft);
-  SerialUSB.print("\t");
-  SerialUSB.println(wheelCountRight);
+//  SerialUSB.print(wheelCountLeft);
+//  SerialUSB.print("\t");
+//  SerialUSB.println(wheelCountRight);
 }

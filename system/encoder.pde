@@ -1,7 +1,7 @@
 void encoderLeft_interrupts(void)
 {
   if(digitalRead(encoderLeftDir) == LOW)
-    wheelCountLeft+=;
+    wheelCountLeft++;
   else
     wheelCountLeft--;
 }

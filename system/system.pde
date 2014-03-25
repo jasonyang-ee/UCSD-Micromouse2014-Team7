@@ -1,7 +1,7 @@
 #include "global.h"
 #include "pinMap.h"
 #include "config.h"
-
+#include "Wire.h"
 
 void setup()
 {
@@ -18,23 +18,8 @@ void setup()
   pinMode(BOARD_LED_PIN, OUTPUT);
   pinMode(BOARD_BUTTON_PIN, INPUT);
   
-  attachInterrupt(encoderLeftCLK, encoderLeftInterrupts, RISING);
-  attachInterrupt(encoderRightCLK, encoderRightInterrupts, RISING);
-}
-void encoderLeftInterrupts(void)
-{
-  if(digitalRead(encoderLeftDir) == HIGH)
-    wheelCountLeft++;
-  else
-    wheelCountLeft--;
-}
-
-void encoderRightInterrupts(void)
-{
-  if(digitalRead(encoderRightDir) == HIGH)
-    wheelCountRight++;
-  else
-    wheelCountRight--;
+  attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
+  attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
 }
 
 void loop()

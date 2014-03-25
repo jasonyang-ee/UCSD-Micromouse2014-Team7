@@ -1,11 +1,11 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-//==========  Direction Code  ==========//
+//==========  Direction Code  ==========
 //            N          0
 //          W   E  ==  3   1
 //            S          2
-//======================================//
+//======================================
 
 #define WALL_NORTH 1
 #define WALL_EAST 2

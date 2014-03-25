@@ -1,6 +1,6 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
-#include "global.h"
+
 
 class Function{
 public:

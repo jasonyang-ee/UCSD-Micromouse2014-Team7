@@ -1,18 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-void board_botton(void);
 
-//Sensor Distance
-volatile double sensorLeft;
-volatile double sensorFrontLeft;
-volatile double sensorFront;
-volatile double sensorFrontRight;
-volatile double sensorRight;
-
-//Motor Speed
-int speedLeft = 0;
-int speedRight = 0;
 
 //Encoder Counts
 volatile int wheelCountLeft = 0;

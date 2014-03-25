@@ -1,5 +1,5 @@
-#ifndef DEFINE_H
-#define DEFINE_H
+#ifndef PINMAP_H
+#define PINMAP_H
 
 //Sensor
 #define sensorLeft 3
@@ -17,10 +17,10 @@
 #define motorRight2 21
 
 //Encoder
-#define encoderRightDir 8
-#define encoderRightCLK 9
-#define encoderLeftDir 26
-#define encoderLeftCLK 25
+#define encoderRightDir 26
+#define encoderRightCLK 25
+#define encoderLeftDir 8
+#define encoderLeftCLK 9
 
 //Indicator LED
 #define Led1 12

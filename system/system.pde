@@ -36,36 +36,25 @@ void setup()
 
 void loop()
 {
-//  motorLeft_Break();
-//  motorRight_Break();
-//  int temp=0;
-//  
-//  Wire.beginTransmission(0x53);
-//  Wire.send(0x32);
-//  Wire.requestFrom(0x53, 1);
-//  if(Wire.available())
-//  {
-//    SerialUSB.print("hi");
-//    temp = Wire.receive();
-//  }
-//
-//  int confirm = Wire.endTransmission();
-//
-//  SerialUSB.println(confirm);
-    
-    
+//  if(abs(wheelCountLeft)>120)
+//    motorLeft_go(0);
+//  else   motorLeft_go(10000);
   
-//  int *temp = get_I2C();
-//  SerialUSB.print("x: ");
-//  SerialUSB.print(temp[0]);
-//  SerialUSB.print(" y: ");
-//  SerialUSB.print(temp[1]);
-//  SerialUSB.print(" z: ");
-//  SerialUSB.println(temp[2]);
   
-  motorLeft_go(20000);
-  motorRight_go(20000);
+  motorLeft_go(0);
+  motorRight_go(0);
   SerialUSB.print(wheelCountLeft);
   SerialUSB.print("\t");
   SerialUSB.println(wheelCountRight);
+//  if(wheelCountLeft<90) motorLeft_go(10000);
+//  else motorLeft_go(0);
+//  if(wheelCountRight>(-90)) motorRight_go(-7500);
+//  else motorRight_go(0);
+//  
+//  if(speedLeft == 0 && speedRight == 0)
+//  {
+//    wheelCountLeft = 0;
+//    wheelCountRight = 0;
+//    delay(500);
+//  }
 }

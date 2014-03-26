@@ -1,20 +1,22 @@
 void motorLeft_go(int speed)
 {
+  speedLeft = speed;
   if(speed == 0)
     motorLeft_break();
   else if(speed>0)
     motorLeft_foward(speed);
   else if(speed<0)
-    motorLeft_backward(speed);
+    motorLeft_backward(-speed);
 }
 void motorRight_go(int speed)
 {
+  speedRight = speed;
   if(speed == 0)
     motorRight_break();
   else if(speed>0)
     motorRight_foward(speed);
   else if(speed<0)
-    motorRight_backward(speed);
+    motorRight_backward(-speed);
 }
 
 void motorLeft_break()

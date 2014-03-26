@@ -38,30 +38,16 @@ void loop()
 {
   motorLeft_Break();
   motorRight_Break();
-  int temp=0;
   
-  Wire.beginTransmission(0x53);
-  Wire.send(0x32);
-  Wire.requestFrom(0x53, 1);
-  if(Wire.available())
-  {
-    SerialUSB.print("hi");
-    temp = Wire.receive();
-  }
+  int *data = get_accelerometer();
+  //get_tap();
 
-  int confirm = Wire.endTransmission();
-
-  SerialUSB.println(confirm);
-    
-    
-  
-//  int *temp = get_I2C();
-//  SerialUSB.print("x: ");
-//  SerialUSB.print(temp[0]);
-//  SerialUSB.print(" y: ");
-//  SerialUSB.print(temp[1]);
-//  SerialUSB.print(" z: ");
-//  SerialUSB.println(temp[2]);
+  SerialUSB.print("x: ");
+  SerialUSB.print(data[0]);
+  SerialUSB.print(" y: ");
+  SerialUSB.print(data[1]);
+  SerialUSB.print(" z: ");
+  SerialUSB.println(data[2]);
   
   
 //  SerialUSB.print(wheelCountLeft);

@@ -36,22 +36,22 @@ void setup()
 
 void loop()
 {
-  motorLeft_Break();
-  motorRight_Break();
-  int temp=0;
-  
-  Wire.beginTransmission(0x53);
-  Wire.send(0x32);
-  Wire.requestFrom(0x53, 1);
-  if(Wire.available())
-  {
-    SerialUSB.print("hi");
-    temp = Wire.receive();
-  }
-
-  int confirm = Wire.endTransmission();
-
-  SerialUSB.println(confirm);
+//  motorLeft_Break();
+//  motorRight_Break();
+//  int temp=0;
+//  
+//  Wire.beginTransmission(0x53);
+//  Wire.send(0x32);
+//  Wire.requestFrom(0x53, 1);
+//  if(Wire.available())
+//  {
+//    SerialUSB.print("hi");
+//    temp = Wire.receive();
+//  }
+//
+//  int confirm = Wire.endTransmission();
+//
+//  SerialUSB.println(confirm);
     
     
   
@@ -63,8 +63,9 @@ void loop()
 //  SerialUSB.print(" z: ");
 //  SerialUSB.println(temp[2]);
   
-  
-//  SerialUSB.print(wheelCountLeft);
-//  SerialUSB.print("\t");
-//  SerialUSB.println(wheelCountRight);
+  motorLeft_go(20000);
+  motorRight_go(20000);
+  SerialUSB.print(wheelCountLeft);
+  SerialUSB.print("\t");
+  SerialUSB.println(wheelCountRight);
 }

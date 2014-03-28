@@ -36,10 +36,11 @@ void setup()
 
 void loop()
 {
+
 //  if(abs(wheelCountLeft)>120)
 //    motorLeft_go(0);
 //  else   motorLeft_go(10000);
-  
+
   
   motorLeft_go(0);
   motorRight_go(0);

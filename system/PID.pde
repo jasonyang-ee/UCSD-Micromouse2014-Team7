@@ -1,6 +1,4 @@
-
-
-void PID(int mode)
+void PID()
 {
   switch (mode)
   {
@@ -13,12 +11,27 @@ void PID(int mode)
       int Kd = 200;
       int Ki = 0;
 
-      int correction = round(Kp * status.errorDiagonal + Kd*(status.errorDiagonalDiff)/.001 + Ki*status.errorDiagonalTotal);
+      int correction = round(Kp * errorDiagonal + Kd*(errorDiagonalDiff)/.001 + Ki*errorDiagonalTotal);
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error
-      motor.motorRight(status.speedBase + correction);
-      motor.motorLeft(status.speedBase - correction);            
+      motorRight_Forward(speedBase + correction);
+      motorLeft_Forward(speedBase - correction);            
       break;
-    }  
+    } 
   }
 }
+
+void goStraight(int speed)
+{
+  //Error Initializations
+  errorDiagonalTotal=0;
+
+  wheelCountLeft = 0;
+  wheelCountRight = 0;
+
+  //mode set
+  mode = modeStraight;          
+  speedBase = speed;
+}
+
+

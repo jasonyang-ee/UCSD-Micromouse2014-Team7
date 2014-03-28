@@ -37,6 +37,29 @@ void setup()
 
 void loop()
 {
+  
+  //Go Straight
+  if(mode == modeDecide)
+  {
+    goStraight(10000);
+  }
+  
+  if(mode == modeStraight)
+  {
+    runAllSensor(); 
+    PID();
+    if (distFront < 2) mode = modeStop;
+  }
+  
+  if(mode == modeStop)
+  {
+    motorLeft_Break();
+    motorRight_Break();
+  }
+    
+  
+  
+  /*
   motorLeft_Break();
   motorRight_Break();
   
@@ -49,7 +72,7 @@ void loop()
   SerialUSB.print(data[1]);
   SerialUSB.print(" z: ");
   SerialUSB.println(data[2]);
-  
+  */
   
 //  SerialUSB.print(wheelCountLeft);
 //  SerialUSB.print("\t");

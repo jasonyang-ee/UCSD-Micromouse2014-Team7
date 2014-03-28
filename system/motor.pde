@@ -12,14 +12,14 @@ void motorRight_Break()
   digitalWrite(motorRightSTBY, HIGH);
   pwmWrite(motorRightPWM, 0);
 }
-void motorLeft_Foward(int speed)
+void motorLeft_Forward(int speed)
 {
   digitalWrite(motorLeft1, HIGH);
   digitalWrite(motorLeft2, LOW);
   digitalWrite(motorLeftSTBY, HIGH);
   pwmWrite(motorLeftPWM, speed);
 }
-void motorRight_Foward(int speed)
+void motorRight_Forward(int speed)
 {
   digitalWrite(motorRight1, LOW);
   digitalWrite(motorRight2, HIGH);

@@ -3,9 +3,9 @@
 
 //Sensor
 #define sensorLeft 3
-#define sensorFrontLeft 4
+#define sensorDiagonalLeft 4
 #define sensorFront 5
-#define sensorFrontRight 7
+#define sensorDiagonalRight 7
 #define sensorRight 6
 
 //Motor

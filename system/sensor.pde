@@ -4,15 +4,17 @@ void runAllSensor()
   voltFront = (runSensor(sensorFront));
   voltLeft = (runSensor(sensorLeft));
   voltRight = (runSensor(sensorRight));
-  voltFrontLeft = (runSensor(sensorFrontLeft));
-  voltFrontRight = (runSensor(sensorFrontRight));
+  voltDiagonalLeft = (runSensor(sensorDiagonalLeft));
+  voltDiagonalRight = (runSensor(sensorDiagonalRight));
  
   //converte voltage to distance
   distFront = convertDistance(voltFront, 1);
   distLeft = convertDistance(voltLeft, 2);
   distRight = convertDistance(voltRight, 3);
-  distFrontLeft = convertDistance(voltFrontLeft, 4);
-  distFrontRight = convertDistance(voltFrontRight, 5);
+  distDiagonalLeft = convertDistance(voltDiagonalLeft, 4);
+  distDiagonalRight = convertDistance(voltDiagonalRight, 5);
+  
+  calculateErrorDiagonal();
 }
 
 
@@ -36,7 +38,7 @@ double convertDistance(int volt, int c)
   if(c==1)
   {
     // dist = -998.25*(1/v)^2 + 270.64*(1/v) -1.1891
-    if(volt>9)  return (( -998.25*x*x + 270.64*x - 1.1891));// - status.distFrontRight) < 2 ?  -998.25*x*x + 270.64*x - 1.1891: status.distFrontRight );
+    if(volt>9)  return (( -998.25*x*x + 270.64*x - 1.1891));
     else  return 20;
   }
   
@@ -44,7 +46,7 @@ double convertDistance(int volt, int c)
   if(c==2)
   {
     // dist = -414.6(1/V)^2 + 143(1/V) - 0.9423
-    if(volt>6)  return ( (-414.6*x*x + 143*x - 0.9423));// - status.distSideLeft) < 2 ? -414.6*x*x + 143*x - 0.9423 : status.distSideLeft );
+    if(volt>6)  return ( (-414.6*x*x + 143*x - 0.9423));
     else return 20;
   }
   
@@ -52,7 +54,7 @@ double convertDistance(int volt, int c)
   if(c==3)
   {
     // dist = 773.41(1/V)^2 + 96.525(1/V) - 0.6535
-    if(volt>8)  return ( 773.41*x*x + 96.525*x - 0.6535);// - status.distSideRight) < 2 ? 773.41*x*x + 96.525*x - 0.6535: status.distSideRight );
+    if(volt>8)  return ( 773.41*x*x + 96.525*x - 0.6535);
     else  return 20;
   }
   
@@ -72,4 +74,12 @@ double convertDistance(int volt, int c)
     else  return 20;
   }
   return 20;
+}
+
+void calculateErrorDiagonal()
+{
+  errorDiagonalLast = errorDiagonal;
+  errorDiagonal = (distDiagonalLeft - distDiagonalRight) * 0.707;
+  errorDiagonalDiff = errorDiagonal - errorDiagonalLast;
+  errorDiagonalTotal += errorDiagonal;
 }

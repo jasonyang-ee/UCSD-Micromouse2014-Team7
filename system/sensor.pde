@@ -17,8 +17,24 @@ void runAllSensor()
   calculateErrorDiagonal();
 }
 
+void sensor_calibration()
+{
+  voltFront = (runSensor(sensorFront));
+  voltLeft = (runSensor(sensorLeft));
+  voltRight = (runSensor(sensorRight));
+  voltFrontLeft = (runSensor(sensorFrontLeft));
+  voltFrontRight = (runSensor(sensorFrontRight));
+  SerialUSB.print(voltLeft);
+  SerialUSB.print("\t");
+  SerialUSB.print(voltFrontLeft);
+  SerialUSB.print("\t");
+  SerialUSB.print(voltFront);
+  SerialUSB.print("\t");
+  SerialUSB.print(voltFrontRight);
+  SerialUSB.print("\t");
+  SerialUSB.println(voltRight);
+}
 
-/*=======================================================  individual sensor  =======================================================*/
 int runSensor(int sensorRef)
 {
   int sampleNum = 20;

@@ -1,9 +1,14 @@
+int get_encoderLeft(void)
+{
+
+}
+
 void encoderLeft_interrupts(void)
 {
   if(digitalRead(encoderLeftDir) == LOW)
-    wheelCountLeft++;
+    wheelCountLeft+=4;
   else
-    wheelCountLeft--;
+    wheelCountLeft-=4;
 }
 
 void encoderRight_interrupts(void)

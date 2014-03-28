@@ -1,7 +1,9 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-
+//motor
+int speedLeft = 0;
+int speedRight = 0;
 
 //Encoder Counts
 volatile int wheelCountLeft = 0;

@@ -22,13 +22,16 @@ volatile int voltRight = 0;
 volatile int voltDiagonalLeft = 0;
 volatile int voltDiagonalRight = 0;
 
+int errorSide = 0;
+int errorSideLast = 0;
+int errorSideDiff = 0;
+int errorSideTotal = 0;
+
 int errorDiagonal = 0;
 int errorDiagonalLast = 0;
 int errorDiagonalDiff = 0;
 int errorDiagonalTotal = 0;
 
-//Motor Values
-int speedBase;
 
 //Loop Control
 int systemStage = 1;

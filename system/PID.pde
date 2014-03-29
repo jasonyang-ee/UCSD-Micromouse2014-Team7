@@ -7,15 +7,15 @@ void PID()
     {		      
       //Follows FrontLeft/FrontRight Sensors
       //Gain values for PID
-      int Kp = 1500;
-      int Kd = 200;
-      int Ki = 0;
+      int Kp = 4000;
+      int Kd = 4000;
+      int Ki = 2000;
 
-      int correction = round(Kp * errorDiagonal + Kd*(errorDiagonalDiff)/.001 + Ki*errorDiagonalTotal);
+      int correction = round(Kp * errorSide + Kd*(errorSideDiff)/.0001 + Ki*errorSideTotal);
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error
-      motorRight_Forward(speedBase + correction);
-      motorLeft_Forward(speedBase - correction);            
+      motorRight_go(speedLeft + correction);
+      motorLeft_go(speedRight - correction);            
       break;
     } 
   }
@@ -31,7 +31,6 @@ void goStraight(int speed)
 
   //mode set
   mode = modeStraight;          
-  speedBase = speed;
 }
 
 

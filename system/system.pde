@@ -33,29 +33,32 @@ void setup()
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
   Wire.begin(0,1);
+  mode = modeStraight;
 }
 
 void loop()
-{
-
-  
+{  
+ 
   //Go Straight
-  if(mode == modeDecide)
-  {
-    goStraight(10000);
-  }
+//  if(mode == modeDecide)
+//  {
+//    goStraight(10000);
+//  }
   
   if(mode == modeStraight)
   {
+    speedLeft = 10000;
+    speedRight = 10000;
     runAllSensor(); 
     PID();
-    if (distFront < 2) mode = modeStop;
+    SerialUSB.println(distFront);
+    if (distFront < 5) mode = modeStop;
   }
   
   if(mode == modeStop)
   {
-    motorLeft_Break();
-    motorRight_Break();
+    motorLeft_go(0);
+    motorRight_go(0);
   }
     
 

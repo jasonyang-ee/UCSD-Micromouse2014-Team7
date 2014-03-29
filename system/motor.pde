@@ -1,10 +1,12 @@
+
+
 void motorLeft_go(int speed)
 {
   speedLeft = speed;
   if(speed == 0)
     motorLeft_break();
   else if(speed>0)
-    motorLeft_foward(speed);
+    motorLeft_forward(speed);
   else if(speed<0)
     motorLeft_backward(-speed);
 }
@@ -14,7 +16,7 @@ void motorRight_go(int speed)
   if(speed == 0)
     motorRight_break();
   else if(speed>0)
-    motorRight_foward(speed);
+    motorRight_forward(speed);
   else if(speed<0)
     motorRight_backward(-speed);
 }
@@ -34,7 +36,7 @@ void motorRight_break()
   pwmWrite(motorRightPWM, 0);
 }
 
-void motorLeft_Forward(int speed)
+void motorLeft_forward(int speed)
 {
   digitalWrite(motorLeft1, HIGH);
   digitalWrite(motorLeft2, LOW);
@@ -42,7 +44,7 @@ void motorLeft_Forward(int speed)
   pwmWrite(motorLeftPWM, speed);
 }
 
-void motorRight_Forward(int speed)
+void motorRight_forward(int speed)
 {
   digitalWrite(motorRight1, LOW);
   digitalWrite(motorRight2, HIGH);

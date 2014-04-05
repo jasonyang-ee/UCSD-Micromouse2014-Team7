@@ -39,29 +39,5 @@ void setup()
 void loop()
 {  
  
-  //Go Straight
-//  if(mode == modeDecide)
-//  {
-//    goStraight(10000);
-//  }
-  
-  if(mode == modeStraight)
-  {
-    speedLeft = 10000;
-    speedRight = 10000;
-    runAllSensor(); 
-    PID();
-    SerialUSB.println(distFront);
-    if (distFront < 5) mode = modeStop;
-  }
-  
-  if(mode == modeStop)
-  {
-    motorLeft_go(0);
-    motorRight_go(0);
-  }
-    
-
-
 
 }

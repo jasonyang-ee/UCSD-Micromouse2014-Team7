@@ -8,6 +8,10 @@ int speedRight = 0;
 //Encoder Counts
 volatile int wheelCountLeft = 0;
 volatile int wheelCountRight = 0;
+volatile int lastCountLeft = 0;
+volatile int lastCountRight = 0;
+volatile int encoderTimeLeft = 0;
+volatile int encoderTimeRight = 0;
 
 //Sensor Values
 volatile double distFront = 0;
@@ -15,18 +19,17 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
-
 volatile int voltFront = 0;
 volatile int voltLeft = 0;
 volatile int voltRight = 0;
 volatile int voltDiagonalLeft = 0;
 volatile int voltDiagonalRight = 0;
 
+//PID error
 int errorSide = 0;
 int errorSideLast = 0;
 int errorSideDiff = 0;
 int errorSideTotal = 0;
-
 int errorDiagonal = 0;
 int errorDiagonalLast = 0;
 int errorDiagonalDiff = 0;

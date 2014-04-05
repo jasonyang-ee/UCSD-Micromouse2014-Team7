@@ -50,8 +50,13 @@ int mode = 0;
 #define modeDecide 0
 #define modeStraight 1
 #define modeStop 2
+#define modeTurn 3
+#define modeTurnRight 4
+#define modeTurnLeft 5
+#define modeTurnBack 6
 
-
+int timeSet = 0;
+int timeNow = 0;
 
 
 #endif

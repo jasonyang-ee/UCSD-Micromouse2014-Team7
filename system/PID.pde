@@ -7,9 +7,9 @@ void PID()
     {		      
       //Follows FrontLeft/FrontRight Sensors
       //Gain values for PID
-      int Kp = 4000;
-      int Kd = 4000;
-      int Ki = 2000;
+      int Kp = 1000;
+      int Kd = 800;
+      int Ki = 0;
 
       int correction = round(Kp * errorSide + Kd*(errorSideDiff)/.0001 + Ki*errorSideTotal);
 
@@ -32,5 +32,4 @@ void goStraight(int speed)
   //mode set
   mode = modeStraight;          
 }
-
 

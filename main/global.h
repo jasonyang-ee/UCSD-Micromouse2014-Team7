@@ -17,6 +17,8 @@ int speedRight = 0;
 //Encoder Counts
 volatile int wheelCountLeft = 0;
 volatile int wheelCountRight = 0;
+volatile int lastTickLeft = 0;
+volatile int lastTickRight = 0;
 
 //Loop Control
 int systemStage = 1;

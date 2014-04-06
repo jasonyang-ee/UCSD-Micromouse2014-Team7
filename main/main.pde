@@ -50,18 +50,22 @@ void setup()
 
 void encoderLeftInterrupts(void)
 {
+  if(millis() == lastTickLeft) return;
   if(digitalRead(encoderLeftDir) == HIGH)
     wheelCountLeft++;
   else
     wheelCountLeft--;
+  lastTickLeft = millis();
 }
 
 void encoderRightInterrupts(void)
 {
+  if(millis() == lastTickLeft) return;
   if(digitalRead(encoderRightDir) == HIGH)
     wheelCountRight++;
   else
     wheelCountRight--;
+  lastTickRight = millis();
 }
 
 

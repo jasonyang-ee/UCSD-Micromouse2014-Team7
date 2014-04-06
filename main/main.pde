@@ -1,27 +1,25 @@
 #include "global.h"
-#include "define.h"
+#include "pinMap.h"
 #include "config.h"
 #include "Wire.h"
 
+
 void setup()
 {
-  //Sensor
-  pinMode(sensorLeft,INPUT_ANALOG);
-  pinMode(sensorFrontLeft,INPUT_ANALOG);
-  pinMode(sensorFront,INPUT_ANALOG);
-  pinMode(sensorFrontRight,INPUT_ANALOG);
-  pinMode(sensorRight,INPUT_ANALOG);
   //LED display
   pinMode(Led1,OUTPUT);
   pinMode(Led2,OUTPUT);
   pinMode(Led3,OUTPUT);
-  //Motor
-  pinMode(motorLeftPWM, PWM);
+  //motor
   pinMode(motorLeft1, OUTPUT);
   pinMode(motorLeft2, OUTPUT);
-  pinMode(motorRightPWM, PWM);
+  pinMode(motorLeftSTBY, OUTPUT);
+  pinMode(motorLeftPWM, PWM);
   pinMode(motorRight1, OUTPUT);
   pinMode(motorRight2, OUTPUT);
+  pinMode(motorRightSTBY, OUTPUT);
+  pinMode(motorRightPWM, PWM);
+  
   //Encoder
   pinMode(encoderLeftCLK, INPUT);
   pinMode(encoderLeftDir, INPUT);
@@ -31,43 +29,77 @@ void setup()
   pinMode(BOARD_LED_PIN, OUTPUT);
   pinMode(BOARD_BUTTON_PIN, INPUT);
   
-  //I2C setup
-//  Wire.begin(0,1);
+  attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
+  attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
-  //Interrupts
-//  Timer2.pause();                                      // to set timer clock, please go global.h to change timerRate
-//  Timer2.setPrescaleFactor(72);                        // set freq = system(72MHz) / 72 = 1MHz, counter++ for every 1us
-//  Timer2.setOverflow(timerRate);                       // Set period = timerRate * 1us
-//  Timer2.setChannel1Mode(TIMER_OUTPUT_COMPARE);        // CH1 of timer2 is pin D11
-//  Timer2.setCompare(TIMER_CH1, 1);                     // Interrupt at counter = 1
-//  Timer2.attachCompare1Interrupt(globalInterrupt);     // the function that will be called
-//  Timer2.refresh();                                    // Refresh the timer's count, prescale, and overflow
-//  Timer2.resume();                                     // Start the timer counting
-
-  attachInterrupt(encoderLeftCLK, encoderLeftInterrupts, RISING);
-  attachInterrupt(encoderRightCLK, encoderRightInterrupts, RISING);
+  Wire.begin(0,1);
+  PIDmode = modeTurn;
 }
-
-void encoderLeftInterrupts(void)
-{
-  if(digitalRead(encoderLeftDir) == HIGH)
-    wheelCountLeft++;
-  else
-    wheelCountLeft--;
-}
-
-void encoderRightInterrupts(void)
-{
-  if(digitalRead(encoderRightDir) == HIGH)
-    wheelCountRight++;
-  else
-    wheelCountRight--;
-}
-
 
 void loop()
 {
-  board_botton();
-      
+  systemMode = board_switch();
+    motorLeft_go(0);
+    motorRight_go(0);
+    SerialUSB.print(wheelCountLeft);
+    SerialUSB.print("\t");
+    SerialUSB.println(wheelCountRight);
   
+  if(systemMode == 1)
+  {
+
+  }
+  
+  if(systemMode == 0)
+  {
+    //Turn Right
+    if(PIDmode == modeTurn)
+    {
+      timeSet = millis();
+      //mode = modeTurnRight;
+      //mode = modeTurnLeft;
+      PIDmode = modeTurnBack;
+    }
+    if(PIDmode == modeTurnRight)
+    {
+      motorLeft_go (10000);
+      motorRight_go (-10000);
+      timeNow = millis();
+      if (timeNow >= timeSet + 340) PIDmode = modeStop;
+    }
+    if(PIDmode == modeTurnLeft)
+    {
+      motorLeft_go (-10000);
+      motorRight_go (10000);
+      timeNow = millis();
+      if (timeNow >= timeSet + 320) PIDmode = modeStop;
+    }
+    if(PIDmode == modeTurnBack)
+    {
+      motorLeft_go (10000);
+      motorRight_go (-10000);
+      timeNow = millis();
+      if (timeNow >= timeSet + 600) PIDmode = modeStop;
+    }
+    
+    //Go Straight
+    if(PIDmode == modeDecide)
+    {
+      goStraight(10000);
+    }
+    if(PIDmode == modeStraight)
+    {
+      speedLeft = 10000;
+      speedRight = 10000;
+      runAllSensor(); 
+      PID();
+      if (distFront < 5) PIDmode = modeStop;
+    }
+    if(PIDmode == modeStop)
+    {
+      motorLeft_go(0);
+      motorRight_go(0);
+    }
+  }
+
 }

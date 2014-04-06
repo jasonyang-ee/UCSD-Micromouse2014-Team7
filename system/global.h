@@ -12,6 +12,8 @@ volatile int lastCountLeft = 0;
 volatile int lastCountRight = 0;
 volatile int encoderTimeLeft = 0;
 volatile int encoderTimeRight = 0;
+volatile int lastTickLeft = 0;
+volatile int lastTickRight = 0;
 
 //Sensor Values
 volatile double distFront = 0;

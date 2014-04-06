@@ -8,6 +8,7 @@ int speedRight = 0;
 //Encoder Counts
 volatile int wheelCountLeft = 0;
 volatile int wheelCountRight = 0;
+
 volatile int lastCountLeft = 0;
 volatile int lastCountRight = 0;
 volatile int encoderTimeLeft = 0;
@@ -21,6 +22,7 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
+
 
 //PID error
 int errorLeft = 0;

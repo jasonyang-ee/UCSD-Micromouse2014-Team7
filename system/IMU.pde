@@ -8,18 +8,27 @@ int* get_compass(void)
   uint8 _buff[6];
   int data[3] = {0};
   
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x03);
-  Wire.requestFrom(0x1E, 6);
-
-  for(int i=0; Wire.available(); i++)
-    _buff[i] = Wire.receive();
+  Wire.beginTransmission(0x1E); //open communication with HMC5883
+  Wire.send(0x02); //select mode register
+  Wire.send(0x00); //continuous measurement mode
   int temp = Wire.endTransmission();
+  
   SerialUSB.println(temp);
-    
-  data[0] = (((int)_buff[1]) << 8) | _buff[0];
-  data[1] = (((int)_buff[3]) << 8) | _buff[2];
-  data[2] = (((int)_buff[5]) << 8) | _buff[4];
+
+//  Wire.requestFrom(0x1E, 6);
+//  for(int i=0; Wire.available(); i++)
+//    _buff[i] = Wire.receive();
+//    
+//  data[0] = (((int)_buff[1]) << 8) | _buff[0];
+//  data[1] = (((int)_buff[3]) << 8) | _buff[2];
+//  data[2] = (((int)_buff[5]) << 8) | _buff[4];
+//  
+//  for(int i=0; i<3; i++)
+//  {
+//    SerialUSB.print(data[i]);
+//    SerialUSB.print("\t");
+//  }
+//  SerialUSB.println();
   
   return data;
 }

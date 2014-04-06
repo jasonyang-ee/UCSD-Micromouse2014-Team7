@@ -1,6 +1,6 @@
 void PID()
 {
-  switch (mode)
+  switch (PIDmode)
   {
   //Drives straight
   case modeStraight:
@@ -30,6 +30,6 @@ void goStraight(int speed)
   wheelCountRight = 0;
 
   //mode set
-  mode = modeStraight;          
+  PIDmode = modeStraight;          
 }
 

@@ -24,6 +24,10 @@
 #define encoderLeftDir 8
 #define encoderLeftCLK 9
 
+//4bit switch
+#define switch0 27
+#define switch1 28
+
 //Indicator LED
 #define Led1 12
 #define Led2 13

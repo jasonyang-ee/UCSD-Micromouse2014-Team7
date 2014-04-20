@@ -33,7 +33,8 @@ void setup()
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
   Wire.begin(0,1);
-  PIDmode = modeTurn;
+  PIDmode = modeStraight;
+  modeFollow = followEncoder;
 }
 
 
@@ -41,68 +42,35 @@ void setup()
 
 void loop()
 {
-  systemMode = board_switch();
-    motorLeft_go(0);
-    motorRight_go(0);
-    SerialUSB.print(wheelCountLeft);
-    SerialUSB.print("\t");
-    SerialUSB.println(wheelCountRight);
-  
-  if(systemMode == 1)
-  {
+//  motorLeft_go(0);
+//  motorRight_go(0);
+//  sensor_calibration();
+//  systemMode = board_switch();
+//  motorLeft_go(10000);
+//  motorRight_go(10000);
+//  SerialUSB.print(wheelCountLeft);
+//  SerialUSB.print("\t");
+//  SerialUSB.println(wheelCountRight);
 
-  }
-  
-  if(systemMode == 0)
-  {
-    //Turn Right
-    if(PIDmode == modeTurn)
-    {
-      timeSet = millis();
-      //mode = modeTurnRight;
-      //mode = modeTurnLeft;
-      PIDmode = modeTurnBack;
-    }
-    if(PIDmode == modeTurnRight)
-    {
-      motorLeft_go (10000);
-      motorRight_go (-10000);
-      timeNow = millis();
-      if (timeNow >= timeSet + 340) PIDmode = modeStop;
-    }
-    if(PIDmode == modeTurnLeft)
-    {
-      motorLeft_go (-10000);
-      motorRight_go (10000);
-      timeNow = millis();
-      if (timeNow >= timeSet + 320) PIDmode = modeStop;
-    }
-    if(PIDmode == modeTurnBack)
-    {
-      motorLeft_go (10000);
-      motorRight_go (-10000);
-      timeNow = millis();
-      if (timeNow >= timeSet + 600) PIDmode = modeStop;
-    }
+
     
     //Go Straight
-    if(PIDmode == modeDecide)
-    {
-      goStraight(10000);
-    }
+//    if(PIDmode == modeDecide)
+//    {
+//      goStraight(10000);
+//    }
     if(PIDmode == modeStraight)
     {
       speedLeft = 10000;
       speedRight = 10000;
       runAllSensor(); 
       PID();
-      if (distFront < 5) PIDmode = modeStop;
+      if (distFront < 10) PIDmode = modeStop;
     }
     if(PIDmode == modeStop)
     {
       motorLeft_go(0);
       motorRight_go(0);
     }
-  }
 
 }

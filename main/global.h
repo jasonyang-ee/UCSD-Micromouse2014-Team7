@@ -41,6 +41,10 @@ int errorDiagonal = 0;
 int errorDiagonalLast = 0;
 int errorDiagonalDiff = 0;
 int errorDiagonalTotal = 0;
+int errorCount = 0;
+int errorCountLast = 0;
+int errorCountDiff = 0;
+int errorCountTotal = 0;
 
 //board_button
 int buttonTime = 0;
@@ -59,6 +63,16 @@ int PIDmode = 0;
 #define modeTurnRight 4
 #define modeTurnLeft 5
 #define modeTurnBack 6
+
+//PID Straight Modes
+int modeFollow = 0;
+#define followSide 1
+#define followDiagonal 2
+#define followRight 3
+#define followLeft 4
+#define followEncoder 5
+
+
 
 int timeSet = 0;
 int timeNow = 0;

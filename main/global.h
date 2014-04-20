@@ -8,7 +8,6 @@ int speedRight = 0;
 //Encoder Counts
 volatile int wheelCountLeft = 0;
 volatile int wheelCountRight = 0;
-
 volatile int lastCountLeft = 0;
 volatile int lastCountRight = 0;
 volatile int encoderTimeLeft = 0;

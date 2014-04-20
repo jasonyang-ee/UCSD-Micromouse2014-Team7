@@ -32,6 +32,9 @@ void setup()
   attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
+  motorLeft_go(0);
+  motorRight_go(0);
+  
   Wire.begin(0,1);
   PIDmode = modeTurn;
 }
@@ -41,18 +44,18 @@ void setup()
 
 void loop()
 {
+  //read user setting
   systemMode = board_switch();
-    motorLeft_go(0);
-    motorRight_go(0);
-    SerialUSB.print(wheelCountLeft);
-    SerialUSB.print("\t");
-    SerialUSB.println(wheelCountRight);
   
+
+  //sensor test mode
   if(systemMode == 1)
   {
-
+    delay(500);
+    sensor_calibration();
   }
-  
+
+  //main search mode
   if(systemMode == 0)
   {
     //Turn Right

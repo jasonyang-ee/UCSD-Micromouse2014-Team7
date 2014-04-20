@@ -12,10 +12,10 @@ void encoderLeft_interrupts(void)
 
 void encoderRight_interrupts(void)
 {
-  if(millis() == lastTickRight) return;
-  if(digitalRead(encoderRightDir) == HIGH)
+//  if(millis() == lastTickRight) return;
+  if(digitalRead(encoderRightDir) == LOW)
     wheelCountRight++;
   else
     wheelCountRight--;
-  lastTickRight = millis();
+//  lastTickRight = millis();
 }

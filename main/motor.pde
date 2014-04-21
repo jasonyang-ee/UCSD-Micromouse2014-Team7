@@ -2,7 +2,6 @@
 
 void motorLeft_go(int speed)
 {
-  speedLeft = speed;
   if(speed == 0)
     motorLeft_break();
   else if(speed>0)
@@ -12,7 +11,6 @@ void motorLeft_go(int speed)
 }
 void motorRight_go(int speed)
 {
-  speedRight = speed;
   if(speed == 0)
     motorRight_break();
   else if(speed>0)

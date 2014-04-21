@@ -11,11 +11,43 @@ void PID()
         {      
           //Follows Side Sensors
           //Gain values for PID
-          int Kp = 1000;
-          int Kd = 800;
+          int Kp = 600;
+          int Kd = 15;
           int Ki = 0;
     
-          int correction = round(Kp * errorSide + Kd*(errorSideDiff)/.0001 + Ki*errorSideTotal);
+          int correction = round(Kp * errorSide + Kd*(errorSideDiff)/timeDiff + Ki*errorSideTotal);
+    
+          //positive correction corresponds to a left error, negative correction corresponds to a right error
+          motorRight_go(speedLeft + correction);
+          motorLeft_go(speedRight - correction);            
+          break;
+        }
+        case followLeft:
+        {      
+          //Follows Side Sensors
+          //Gain values for PID
+          //good result 1500 10
+          int Kp = 2200;
+          int Kd = 10;
+          int Ki = 2;
+    
+          int correction = round(Kp * errorLeft + Kd*(errorLeftDiff)/timeDiff + Ki*errorLeftTotal);
+    
+          //positive correction corresponds to a left error, negative correction corresponds to a right error
+          motorRight_go(speedLeft + correction);
+          motorLeft_go(speedRight - correction);            
+          break;
+        }
+        case followRight:
+        {      
+          //Follows Side Sensors
+          //Gain values for PID
+          //good result 1500 10
+          int Kp = 2200;
+          int Kd = 10;
+          int Ki = 2;
+    
+          int correction = round(Kp * errorRight + Kd*(errorRightDiff)/timeDiff + Ki*errorRightTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft + correction);
@@ -26,11 +58,11 @@ void PID()
         {
           //Follows Encoders
           //Gain Values for PID
-          double Kp = 5;
-          double Kd = 0;
-          double Ki = 0;
+          double Kp = 500;
+          double Kd = 0.1;
+          double Ki = 0.001;
     
-          int correction = round(Kp * errorCount + Kd*(errorCountDiff)/.0001 + Ki*errorCountTotal);
+          int correction = round(Kp * errorCount + Kd*(errorCountDiff)/timeDiff + Ki*errorCountTotal);
           
           
           //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)

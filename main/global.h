@@ -45,6 +45,9 @@ int errorCountLast = 0;
 int errorCountDiff = 0;
 int errorCountTotal = 0;
 
+double timeDiff = 0;
+double timeLast = 0;
+
 //board_button
 int buttonTime = 0;
 int buttonState = 0;

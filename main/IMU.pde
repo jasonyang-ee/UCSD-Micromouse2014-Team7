@@ -1,4 +1,3 @@
-
 //ADXL345 address: 0x53
 //ADXL345 REG:
 
@@ -24,52 +23,52 @@ void get_compass(void)
   uint16 data[3];
   
   Wire.beginTransmission(0x1E);
-  Wire.send(0x02);        //sends address to read from
+  Wire.send(0x02); //sends address to read from
   Wire.send(0x00);
   Wire.endTransmission(); //end transmission
   
   
   Wire.beginTransmission(0x1E);
-  Wire.send(0x03);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x03); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[0] = Wire.receive();   // receive one byte
+    buff[0] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0x1E);
-  Wire.send(0x04);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x04); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[1] = Wire.receive();   // receive one byte
+    buff[1] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0x1E);
-  Wire.send(0x05);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x05); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[2] = Wire.receive();   // receive one byte
+    buff[2] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0x1E);
-  Wire.send(0x06);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x06); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[3] = Wire.receive();   // receive one byte
+    buff[3] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0x1E);
-  Wire.send(0x07);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x07); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[4] = Wire.receive();   // receive one byte
+    buff[4] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0x1E);
-  Wire.send(0x08);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0x1E, 1);    //request 1 bytes from device
+  Wire.send(0x08); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[5] = Wire.receive();   // receive one byte
+    buff[5] = Wire.receive(); // receive one byte
 
   data[0] = (buff[0] << 8) | buff[1];
   data[1] = (buff[2] << 8) | buff[3];
@@ -92,46 +91,46 @@ void get_accelerometer(void)
   int data[3];
   
   Wire.beginTransmission(0xE5);
-  Wire.send(0x32);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x32); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[0] = Wire.receive();   // receive one byte
+    buff[0] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0xE5);
-  Wire.send(0x33);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x33); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[1] = Wire.receive();   // receive one byte
+    buff[1] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0xE5);
-  Wire.send(0x34);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x34); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[2] = Wire.receive();   // receive one byte
+    buff[2] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0xE5);
-  Wire.send(0x35);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x35); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[3] = Wire.receive();   // receive one byte
+    buff[3] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0xE5);
-  Wire.send(0x36);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x36); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[4] = Wire.receive();   // receive one byte
+    buff[4] = Wire.receive(); // receive one byte
     
   Wire.beginTransmission(0xE5);
-  Wire.send(0x37);              //sends address to read from
-  Wire.endTransmission();       //end transmission
-  Wire.requestFrom(0xE5, 1);    //request 1 bytes from device
+  Wire.send(0x37); //sends address to read from
+  Wire.endTransmission(); //end transmission
+  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
   while(Wire.available())
-    buff[5] = Wire.receive();   // receive one byte
+    buff[5] = Wire.receive(); // receive one byte
 
   data[0] = (((int)buff[1]) << 8) | buff[0];
   data[1] = (((int)buff[3]) << 8) | buff[2];
@@ -144,4 +143,3 @@ void get_accelerometer(void)
   }
   SerialUSB.println();
 }
-

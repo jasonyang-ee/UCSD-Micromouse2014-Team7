@@ -8,7 +8,7 @@ void PID()
       switch (modeFollow)
       {
         case followSide:
-        {      
+        {
           //Follows Side Sensors
           //Gain values for PID
           //450 35 for 10000
@@ -20,7 +20,7 @@ void PID()
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft + correction);
-          motorLeft_go(speedRight - correction);            
+          motorLeft_go(speedRight - correction);
           break;
         }
         case followDiagonalLeft:
@@ -32,7 +32,7 @@ void PID()
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft + correction);
-          motorLeft_go(speedRight - correction);            
+          motorLeft_go(speedRight - correction);
           break;
         }
         case followDiagonalRight:
@@ -44,11 +44,11 @@ void PID()
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft - correction);
-          motorLeft_go(speedRight + correction);            
+          motorLeft_go(speedRight + correction);
           break;
         }
         case followLeft:
-        {      
+        {
           //Follows Side Sensors
           //Gain values for PID
           //good result 1500 10
@@ -60,11 +60,11 @@ void PID()
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft + correction);
-          motorLeft_go(speedRight - correction);            
+          motorLeft_go(speedRight - correction);
           break;
         }
         case followRight:
-        {      
+        {
           //Follows Side Sensors
           //Gain values for PID
           //good result 1500 10
@@ -76,7 +76,7 @@ void PID()
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
           motorRight_go(speedLeft + correction);
-          motorLeft_go(speedRight - correction);            
+          motorLeft_go(speedRight - correction);
           break;
         }
         case followEncoder:
@@ -92,13 +92,13 @@ void PID()
           
           //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)
           motorRight_go(speedLeft + correction);
-          motorLeft_go(speedRight - correction);            
+          motorLeft_go(speedRight - correction);
           break;
         }
         case followNone:
         {
           motorRight_go(speedLeft);
-          motorLeft_go(speedRight);  
+          motorLeft_go(speedRight);
         }
       }
       break;
@@ -115,7 +115,7 @@ void PID()
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)
       motorRight_go(speedLeft + correction);
-      motorLeft_go(speedRight - correction);            
+      motorLeft_go(speedRight - correction);
       break;
     }
     case modeTurnLeft:
@@ -130,7 +130,7 @@ void PID()
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)
       motorRight_go(speedLeft + correction);
-      motorLeft_go(speedRight - correction);            
+      motorLeft_go(speedRight - correction);
       break;
     }
     case modeTurnBack:
@@ -145,7 +145,7 @@ void PID()
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)
       motorRight_go(speedLeft + correction);
-      motorLeft_go(speedRight - correction);            
+      motorLeft_go(speedRight - correction);
       break;
     }
     case modeStop:
@@ -160,9 +160,9 @@ void PID()
 
       //positive correction corresponds to a left error, negative correction corresponds to a right error (Not Tested)
       motorRight_go(speedLeft + correction);
-      motorLeft_go(speedRight - correction);            
+      motorLeft_go(speedRight - correction);
       break;
-    } 
+    }
   }
 }
 

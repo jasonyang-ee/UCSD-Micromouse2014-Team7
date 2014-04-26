@@ -86,6 +86,29 @@ int modeFollow = 0;
 //PID Turn Modes
 int turnState = 0;
 
+//Decision Scenarios
+int wallCase = 0;
+#define wallNone 0
+#define wallFront 1
+#define wallRight 2
+#define wallLeft 4
+
+#define wallFrontRight  3
+#define wallFrontLeft 5
+#define wallRightLeft  6
+#define wallAll  7
+
+//Flood Fill Values used in Decision
+int FFL = 0; //Flood Fill Value to Cell on Left
+int FFR = 0; //On Right
+int FFF = 0; //In Front
+int FFB = 0; //Behind
+
+//Status Variables
+int currentX = 0;
+int currentY = 0;
+int compass = 0;
+
 //Turn timer
 int timeSet = 0;
 int timeNow = 0;

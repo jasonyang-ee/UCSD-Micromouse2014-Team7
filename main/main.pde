@@ -35,9 +35,9 @@ void setup()
   Wire.begin(0,1);
   PIDmode = modeStraight;
   modeFollow = followDiagonalRight;
-//  runAllSensor();
-//  initialDiagonalLeft = distDiagonalLeft;
-//  initialDiagonalRight = distDiagonalRight;
+// runAllSensor();
+// initialDiagonalLeft = distDiagonalLeft;
+// initialDiagonalRight = distDiagonalRight;
 }
 
 void loop()
@@ -68,7 +68,7 @@ void loop()
       break;
     }
   
-    //sensor test mode  
+    //sensor test mode
     case 1:
     {
       motorLeft_go(0);

@@ -25,8 +25,8 @@
 #define encoderLeftCLK 30
 
 //4bit switch
-#define switch0 27
-#define switch1 28
+#define switch1 27
+#define switch2 28
 
 //Indicator LED
 #define Led1 12

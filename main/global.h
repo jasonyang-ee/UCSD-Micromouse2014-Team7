@@ -21,6 +21,8 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
+double initialDiagonalLeft = 148;
+double initialDiagonalRight = 114;
 
 
 //PID error
@@ -37,9 +39,14 @@ int errorSideLast = 0;
 int errorSideDiff = 0;
 int errorSideTotal = 0;
 int errorDiagonal = 0;
-int errorDiagonalLast = 0;
-int errorDiagonalDiff = 0;
-int errorDiagonalTotal = 0;
+int errorDiagonalLeftLast = 0;
+int errorDiagonalLeft = 0;
+int errorDiagonalLeftDiff = 0;
+int errorDiagonalLeftTotal = 0;
+int errorDiagonalRightLast = 0;
+int errorDiagonalRight = 0;
+int errorDiagonalRightDiff = 0;
+int errorDiagonalRightTotal = 0;
 int errorCount = 0;
 int errorCountLast = 0;
 int errorCountDiff = 0;
@@ -69,10 +76,13 @@ int PIDmode = 0;
 //PID Straight Modes
 int modeFollow = 0;
 #define followSide 1
-#define followDiagonal 2
-#define followRight 3
-#define followLeft 4
-#define followEncoder 5
+#define followDiagonalLeft 2
+#define followDiagonalRight 3
+#define followRight 4
+#define followLeft 5
+#define followEncoder 6
+#define followNone 7
+int modeFollowState = 0;
 
 
 

@@ -11,8 +11,9 @@ void PID()
         {      
           //Follows Side Sensors
           //Gain values for PID
-          int Kp = 600;
-          int Kd = 15;
+          //300 5 for 10000
+          int Kp = 450;
+          int Kd = 35;
           int Ki = 0;
     
           int correction = round(Kp * errorSide + Kd*(errorSideDiff)/timeDiff + Ki*errorSideTotal);
@@ -22,14 +23,38 @@ void PID()
           motorLeft_go(speedRight - correction);            
           break;
         }
+        case followDiagonalLeft:
+        {
+          int Kp = 600;
+          int Kd = 5;
+          int Ki = 0;
+          int correction = round(Kp * errorDiagonalLeft + Kd*(errorDiagonalLeftDiff)/timeDiff + Ki*errorDiagonalLeftTotal);
+    
+          //positive correction corresponds to a left error, negative correction corresponds to a right error
+          motorRight_go(speedLeft + correction);
+          motorLeft_go(speedRight - correction);            
+          break;
+        }
+        case followDiagonalRight:
+        {
+          int Kp = 600;
+          int Kd = 5;
+          int Ki = 0;
+          int correction = round(Kp * errorDiagonalRight + Kd*(errorDiagonalRightDiff)/timeDiff + Ki*errorDiagonalRightTotal);
+    
+          //positive correction corresponds to a left error, negative correction corresponds to a right error
+          motorRight_go(speedLeft - correction);
+          motorLeft_go(speedRight + correction);            
+          break;
+        }
         case followLeft:
         {      
           //Follows Side Sensors
           //Gain values for PID
           //good result 1500 10
-          int Kp = 2200;
-          int Kd = 10;
-          int Ki = 2;
+          int Kp = 750;
+          int Kd = 25;
+          int Ki = 0;
     
           int correction = round(Kp * errorLeft + Kd*(errorLeftDiff)/timeDiff + Ki*errorLeftTotal);
     
@@ -43,9 +68,9 @@ void PID()
           //Follows Side Sensors
           //Gain values for PID
           //good result 1500 10
-          int Kp = 2200;
-          int Kd = 10;
-          int Ki = 2;
+          int Kp = 750;
+          int Kd = 25;
+          int Ki = 0;
     
           int correction = round(Kp * errorRight + Kd*(errorRightDiff)/timeDiff + Ki*errorRightTotal);
     
@@ -58,9 +83,9 @@ void PID()
         {
           //Follows Encoders
           //Gain Values for PID
-          double Kp = 500;
-          double Kd = 0.1;
-          double Ki = 0.001;
+          double Kp = 300;
+          double Kd = 5;
+          double Ki = 0;
     
           int correction = round(Kp * errorCount + Kd*(errorCountDiff)/timeDiff + Ki*errorCountTotal);
           
@@ -69,6 +94,11 @@ void PID()
           motorRight_go(speedLeft + correction);
           motorLeft_go(speedRight - correction);            
           break;
+        }
+        case followNone:
+        {
+          motorRight_go(speedLeft);
+          motorLeft_go(speedRight);  
         }
       }
       break;
@@ -134,17 +164,5 @@ void PID()
       break;
     } 
   }
-}
-
-void goStraight()
-{
-  //Error Initializations
-  errorDiagonalTotal=0;
-
-  wheelCountLeft = 0;
-  wheelCountRight = 0;
-
-  //mode set
-  PIDmode = modeStraight;          
 }
 

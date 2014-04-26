@@ -34,22 +34,37 @@ void setup()
   
   Wire.begin(0,1);
   PIDmode = modeStraight;
-  modeFollow = followLeft;
+  modeFollow = followDiagonalRight;
+//  runAllSensor();
+//  initialDiagonalLeft = distDiagonalLeft;
+//  initialDiagonalRight = distDiagonalRight;
 }
 
 void loop()
 {
+  
+  
   //read user setting
   systemMode = board_switch();
   board_display();
   
   switch(systemMode)
   {
+    case 3:
+    {
+      SerialUSB.print(wheelCountLeft);
+      SerialUSB.print("\t");
+      SerialUSB.println(wheelCountRight);
+      break;
+    }
     case 2:
     {
-      delay(500);
+      motorLeft_go(0);
+      motorRight_go(0);
+      delay(300);
       runAllSensor();
-      SerialUSB.println((distDiagonalLeft/distLeft)-5);
+      PID_follower();
+      SerialUSB.println(modeFollow);
       break;
     }
   
@@ -60,6 +75,7 @@ void loop()
       motorRight_go(0);
       delay(500);
       runAllSensor();
+      sensor_calibration();
       sensor_read();
       break;
     }
@@ -68,12 +84,13 @@ void loop()
     case 0:
     {
       runAllSensor();
+      PID_follower();
       if(PIDmode == modeStraight)
       {
-        speedLeft = 10000;
-        speedRight = 10000;
+        speedLeft = 30000;
+        speedRight = 30000;
         PID();
-        if(distFront < 35)
+        if(distFront < 200 || distDiagonalLeft > 400 || distDiagonalRight > 350)
           PIDmode = modeStop;
       }
       if(PIDmode == modeStop)

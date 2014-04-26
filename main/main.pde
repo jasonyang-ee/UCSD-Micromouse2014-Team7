@@ -87,12 +87,45 @@ void loop()
       PID_follower();
       if(PIDmode == modeStraight)
       {
-        speedLeft = 30000;
-        speedRight = 30000;
+        speedLeft = 15000;
+        speedRight = 15000;
         PID();
-        if(distFront < 200 || distDiagonalLeft > 400 || distDiagonalRight > 350)
+        if(distFront < 70 || distLeft > 200 || distRight > 200)
           PIDmode = modeStop;
       }
+//      //Turn Right
+//      if(PIDmode == modeTurn)
+//      {
+//        timeSet = millis();
+//        //mode = modeTurnRight;
+//        //mode = modeTurnLeft;
+//        mode = modeTurnBack;
+//      }
+//      
+//      if(mode == modeTurnRight)
+//      {
+//        motorLeft_go (10000);
+//        motorRight_go (-10000);
+//        timeNow = millis();
+//        if (timeNow >= timeSet + 340) mode = modeStop;
+//      }
+//      
+//      if(mode == modeTurnLeft)
+//      {
+//        motorLeft_go (-10000);
+//        motorRight_go (10000);
+//        timeNow = millis();
+//        if (timeNow >= timeSet + 320) mode = modeStop;
+//      }
+//      
+//      if(mode == modeTurnBack)
+//      {
+//        motorLeft_go (10000);
+//        motorRight_go (-10000);
+//        timeNow = millis();
+//        if (timeNow >= timeSet + 600) mode = modeStop;
+//      }
+      
       if(PIDmode == modeStop)
       {
         motorLeft_go(0);

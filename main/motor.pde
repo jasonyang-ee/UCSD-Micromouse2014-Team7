@@ -1,5 +1,4 @@
-
-
+//general function
 void motorLeft_go(int speed)
 {
   if(speed == 0)
@@ -19,6 +18,10 @@ void motorRight_go(int speed)
     motorRight_backward(-speed);
 }
 
+
+
+
+//Privite function
 void motorLeft_break()
 {
   digitalWrite(motorLeft1, HIGH);

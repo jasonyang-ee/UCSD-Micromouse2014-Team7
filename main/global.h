@@ -24,7 +24,6 @@ volatile double distDiagonalRight = 0;
 double initialDiagonalLeft = 148;
 double initialDiagonalRight = 114;
 
-
 //PID error
 int errorLeft = 0;
 int errorLeftLast = 0;
@@ -52,6 +51,7 @@ int errorCountLast = 0;
 int errorCountDiff = 0;
 int errorCountTotal = 0;
 
+//PID time interval
 double timeDiff = 0;
 double timeLast = 0;
 
@@ -82,12 +82,20 @@ int modeFollow = 0;
 #define followLeft 5
 #define followEncoder 6
 #define followNone 7
-int modeFollowState = 0;
 
+//PID Turn Modes
+int turnState = 0;
 
-
+//Turn timer
 int timeSet = 0;
 int timeNow = 0;
+
+//Movement of the mouse
+int movement = 0;
+int movementNow = 0;
+int movementLast = 0;
+
+
 
 
 #endif

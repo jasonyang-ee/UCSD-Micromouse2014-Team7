@@ -1,5 +1,3 @@
-
-
 void encoderLeft_interrupts(void)
 {
 //  if(millis() == lastTickLeft) return;

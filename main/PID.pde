@@ -11,9 +11,9 @@ void PID()
         {      
           //Follows Side Sensors
           //Gain values for PID
-          //300 5 for 10000
-          int Kp = 450;
-          int Kd = 35;
+          //450 35 for 10000
+          int Kp = 300;
+          int Kd = 5;
           int Ki = 0;
     
           int correction = round(Kp * errorSide + Kd*(errorSideDiff)/timeDiff + Ki*errorSideTotal);
@@ -166,3 +166,15 @@ void PID()
   }
 }
 
+//set PID straight follow state
+void PID_follower()
+{
+  if(distDiagonalRight > 200 && distDiagonalLeft > 200 && (distRight > 60 || distLeft > 60))
+    modeFollow = followNone;
+  else if(distDiagonalRight > 200 && distDiagonalLeft < 200 && (distRight > 60 || distLeft > 60))
+    modeFollow = followDiagonalLeft;
+  else if(distDiagonalRight < 200 && distDiagonalLeft > 200 && (distRight > 60 || distLeft > 60))
+    modeFollow = followDiagonalRight;
+  else if(distRight < 60 && distLeft < 60)
+    modeFollow = followSide;  
+}

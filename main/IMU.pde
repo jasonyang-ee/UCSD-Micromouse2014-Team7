@@ -16,70 +16,91 @@
 #define HMC5883L_REG_ID_B 0x0B
 #define HMC5883L_REG_ID_C 0x0C
 
+
+void set_compass(void)
+{
+  Wire.beginTransmission(0x1E);
+  Wire.send(0x02); //sends address to read from
+  Wire.send(0x00);
+  Wire.endTransmission(); //end transmission
+}
+
 void get_compass(void)
 {
   int i = 0;
   uint16 buff[6];
   uint16 data[3];
+
+  Wire.beginTransmission(0x1E);
+  Wire.send(0x00); //sends address to read from
+  Wire.send(0x71);
+  Wire.endTransmission(); //end transmission
+  
+  Wire.beginTransmission(0x1E);
+  Wire.send(0x01); //sends address to read from
+  Wire.send(0xA0);
+  Wire.endTransmission(); //end transmission
   
   Wire.beginTransmission(0x1E);
   Wire.send(0x02); //sends address to read from
   Wire.send(0x00);
   Wire.endTransmission(); //end transmission
+
+  delay(6);
   
-  
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x03); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[0] = Wire.receive(); // receive one byte
-    
   Wire.beginTransmission(0x1E);
   Wire.send(0x04); //sends address to read from
   Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+  Wire.requestFrom(0x1E, 2); //request 1 bytes from device
   while(Wire.available())
-    buff[1] = Wire.receive(); // receive one byte
+  {
+    buff[i] = Wire.receive(); // receive one byte
+    i++;
+  }
     
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x05); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[2] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x06); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[3] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x07); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[4] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x08); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[5] = Wire.receive(); // receive one byte
+//  Wire.beginTransmission(0x1E);
+//  Wire.send(0x04); //sends address to read from
+//  Wire.endTransmission(); //end transmission
+//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+//  buff[1] = Wire.receive(); // receive one byte
+//    
+//  Wire.beginTransmission(0x1E);
+//  Wire.send(0x05); //sends address to read from
+//  Wire.endTransmission(); //end transmission
+//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+//  buff[2] = Wire.receive(); // receive one byte
+//    
+//  Wire.beginTransmission(0x1E);
+//  Wire.send(0x06); //sends address to read from
+//  Wire.endTransmission(); //end transmission
+//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+//  buff[3] = Wire.receive(); // receive one byte
+//    
+//  Wire.beginTransmission(0x1E);
+//  Wire.send(0x07); //sends address to read from
+//  Wire.endTransmission(); //end transmission
+//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+//    buff[4] = Wire.receive(); // receive one byte
+//    
+//  Wire.beginTransmission(0x1E);
+//  Wire.send(0x08); //sends address to read from
+//  Wire.endTransmission(); //end transmission
+//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
+////  while(Wire.available())
+//    buff[5] = Wire.receive(); // receive one byte
 
   data[0] = (buff[0] << 8) | buff[1];
   data[1] = (buff[2] << 8) | buff[3];
   data[2] = (buff[4] << 8) | buff[5];
   
-  for(int i=0; i<3; i++)
-  {
-    SerialUSB.print(uint16(data[i]));
-    SerialUSB.print("\t");
-  }
-  SerialUSB.println();
+  SerialUSB.println(buff[0]);
+  
+//  for(int i=0; i<3; i++)
+//  {
+//    SerialUSB.print(uint16(data[i]));
+//    SerialUSB.print("\t");
+//  }
+//  SerialUSB.println();
   
 }
 

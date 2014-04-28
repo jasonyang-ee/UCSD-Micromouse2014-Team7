@@ -1,15 +1,19 @@
-
-
 void decide()
 {
   wallCase = 0;
 
   //Checks Walls for Case  
   if(distFront < 50)  wallCase += wallFront;
-  if(distRight < 50)  wallCase += wallRight;
-  if(distLeft < 50)  wallCase += wallLeft;
+  if(distRight < 80)  wallCase += wallRight;
+  if(distLeft < 80)  wallCase += wallLeft;
 
   //FF = Flood Fill Value Left/Right/Front/Back
+  
+  //For Testing Only//
+  FFF = 1;
+  FFR = 2;
+  FFL = 3;
+  FFB = 4;
   
 //  neighbor();
   
@@ -26,61 +30,60 @@ void decide()
         PIDmode = modeTurnBack;
      break;
       
-//    case(1) :  //One Wall in Front
-//      if (FFL < FFR)
-//      {  //turn left, FFL is smallest
-//        motorLeft_go(-1);
-//        motorRight_go(1);
-//      }
-//      else
-//    {  // otherwise turn right
-//        motorLeft_go(1);
-//        motorRight_go(-1);
-//    }
-//      break;
-//      
-//    case(2) :  //One Wall on the Right 
-//      if (FFL < FFF)  
-//      {
-//        motorLeft_go(-1);
-//        motorRight_go(1);
-//      }
-//      else
-//        motorLeft_go(1);
-//        motorRight_go(1);
-//      break;  
-//    
-//    case(3) :  //One wall on the Right, one in Front
-//      motorLeft_go(-1);
-//      motorRight_go(1);
-//    
-//    break;
-//    
-//    case(4) :  //One wall on the left
-//      if (FFR < FFF)
-//        motorLeft_go(1);
-//        motorRight_go(-1);
-//      else
-//        motorLeft_go(1);
-//        motorRight_go(1);
-//        break;
-//        
-//    case(5) :  //One Wall the the left, one in front
-//      motorLeft_go(1);
-//      motorRight_go(-1);
-//      break;
-//      
-//    case(6) : //One wall on the left, one on the Right 
-//      motorLeft_go(1);
-//      motorRight_go(1);
-//    break;
-//    
-//    //this case makes it turns 180
-//    case(7) :  //surrounded by 3 walls
-//      motorLeft_go(10);
-//      motorRight_go(-10);
-//    break;
+    case(wallFront) :  //One Wall in Front
+      if ((FFL <= FFR) && (FFL <= FFB))   //turn left, FFL is smallest
+        PIDmode = modeTurnLeft;
+      else if ((FFR <= FFL) && (FFR <= FFB))          // otherwise turn right
+        PIDmode = modeTurnRight;
+      else
+        PIDmode = modeTurnBack;
+     break;
+      
+    case(wallRight) :  //One Wall on the Right 
+      if ((FFF <= FFL) && (FFF <= FFB))
+        PIDmode = modeStraight;
+      else if ((FFL <= FFF) && (FFL <= FFB))
+        PIDmode = modeTurnLeft;
+      else
+        PIDmode = modeTurnBack;
+     break;  
+    
+    case(wallFrontRight) :  //One wall on the Right, one in Front
+      if (FFL <= FFB)
+        PIDmode = modeTurnLeft;
+      else
+        PIDmode = modeTurnBack;
+     break;
+    
+    case(wallLeft) :  //One wall on the left
+      if ((FFF <= FFR) && (FFF <= FFB))
+        PIDmode = modeStraight;
+      else if ((FFR <= FFF) && (FFR <= FFB))
+        PIDmode = modeTurnRight;
+      else
+        PIDmode = modeTurnBack;
+     break;
+        
+    case(wallFrontLeft) :  //One Wall the the left, one in front
+      if (FFR <= FFB)
+        PIDmode = modeTurnRight;
+      else
+        PIDmode = modeTurnBack;
+     break;
+      
+    case(wallRightLeft) : //One wall on the left, one on the Right 
+      if (FFF <= FFB)
+        PIDmode = modeStraight;
+      else
+        PIDmode = modeTurnBack;
+     break;
+    
+    //this case makes it turns 180
+    case(wallAll) :  //surrounded by 3 walls
+        PIDmode = modeTurnBack;
+     break;
   }
+  return;
 }
 
 //void neighbor ()

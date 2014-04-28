@@ -2,6 +2,7 @@
 #include "pinMap.h"
 #include "config.h"
 #include "Wire.h"
+#include <stdio.h>
 
 
 void setup()
@@ -32,18 +33,15 @@ void setup()
   attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
-  Wire.begin(0,1);
-  PIDmode = modeStraight;
-  modeFollow = followDiagonalRight;
-// runAllSensor();
-// initialDiagonalLeft = distDiagonalLeft;
-// initialDiagonalRight = distDiagonalRight;
+  setup_maze(16);
+  
+//  PIDmode = modeStraight;
+//  modeFollow = followDiagonalRight;
 }
 
 void loop()
 {
-  
-  
+  //char* buffer;
   //read user setting
   systemMode = board_switch();
   board_display();
@@ -52,9 +50,7 @@ void loop()
   {
     case 3:
     {
-      SerialUSB.print(wheelCountLeft);
-      SerialUSB.print("\t");
-      SerialUSB.println(wheelCountRight);
+      //sprintf(
       break;
     }
     case 2:
@@ -80,57 +76,9 @@ void loop()
       break;
     }
   
-    //PID
-    case 0:
+    case 0:  //main searching mode input by user
     {
-      runAllSensor();
-      PID_follower();
-      if(PIDmode == modeStraight)
-      {
-        speedLeft = 15000;
-        speedRight = 15000;
-        PID();
-        if(distFront < 70 || distLeft > 200 || distRight > 200)
-          PIDmode = modeStop;
-      }
-//      //Turn Right
-//      if(PIDmode == modeTurn)
-//      {
-//        timeSet = millis();
-//        //mode = modeTurnRight;
-//        //mode = modeTurnLeft;
-//        mode = modeTurnBack;
-//      }
-//      
-//      if(mode == modeTurnRight)
-//      {
-//        motorLeft_go (10000);
-//        motorRight_go (-10000);
-//        timeNow = millis();
-//        if (timeNow >= timeSet + 340) mode = modeStop;
-//      }
-//      
-//      if(mode == modeTurnLeft)
-//      {
-//        motorLeft_go (-10000);
-//        motorRight_go (10000);
-//        timeNow = millis();
-//        if (timeNow >= timeSet + 320) mode = modeStop;
-//      }
-//      
-//      if(mode == modeTurnBack)
-//      {
-//        motorLeft_go (10000);
-//        motorRight_go (-10000);
-//        timeNow = millis();
-//        if (timeNow >= timeSet + 600) mode = modeStop;
-//      }
-      
-      if(PIDmode == modeStop)
-      {
-        motorLeft_go(0);
-        motorRight_go(0);
-      }
+      solve_maze();
       break;
     }
   }//end switch

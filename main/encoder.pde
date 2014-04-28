@@ -1,5 +1,6 @@
 void encoderLeft_interrupts(void)
 {
+  
 //  if(millis() == lastTickLeft) return;
   if(digitalRead(encoderLeftDir) == HIGH)
     wheelCountLeft++;

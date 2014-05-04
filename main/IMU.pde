@@ -16,151 +16,52 @@
 #define HMC5883L_REG_ID_B 0x0B
 #define HMC5883L_REG_ID_C 0x0C
 
+void set_heading()
+{
+  get_compass();
+  heading = atan2(compass_raw_y, compass_raw_x);
+  if(heading < 0)
+    heading += 2*PI;
+  if(heading > 2*PI)
+    heading -= 2*PI;
+  heading = heading * 180/M_PI;
+}
+
 
 void set_compass(void)
 {
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x02); //sends address to read from
-  Wire.send(0x00);
-  Wire.endTransmission(); //end transmission
+//  Wire.beginTransmission(HMC5883L_SLA);
+//  Wire.send(HMC5883L_REG_CFG_A);
+//  Wire.send(0x18);
+//  Wire.endTransmission();
+//  Wire.beginTransmission(HMC5883L_SLA); //open communication with HMC5883
+//  Wire.send(HMC5883L_REG_CFG_B);
+//  Wire.send(0xE0);
+//  Wire.endTransmission();
+  Wire.beginTransmission(HMC5883L_SLA); //open communication with HMC5883
+  Wire.send(HMC5883L_REG_MODE); //select mode register
+  Wire.send(0x00); //continuous measurement mode
+  Wire.endTransmission();
 }
 
-void get_compass(void)
+uint8 get_registor(int address,int reg)
 {
-  int i = 0;
-  uint16 buff[6];
-  uint16 data[3];
-
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x00); //sends address to read from
-  Wire.send(0x71);
-  Wire.endTransmission(); //end transmission
-  
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x01); //sends address to read from
-  Wire.send(0xA0);
-  Wire.endTransmission(); //end transmission
-  
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x02); //sends address to read from
-  Wire.send(0x00);
-  Wire.endTransmission(); //end transmission
-
-  delay(6);
-  
-  Wire.beginTransmission(0x1E);
-  Wire.send(0x04); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0x1E, 2); //request 1 bytes from device
-  while(Wire.available())
-  {
-    buff[i] = Wire.receive(); // receive one byte
-    i++;
-  }
-    
-//  Wire.beginTransmission(0x1E);
-//  Wire.send(0x04); //sends address to read from
-//  Wire.endTransmission(); //end transmission
-//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-//  buff[1] = Wire.receive(); // receive one byte
-//    
-//  Wire.beginTransmission(0x1E);
-//  Wire.send(0x05); //sends address to read from
-//  Wire.endTransmission(); //end transmission
-//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-//  buff[2] = Wire.receive(); // receive one byte
-//    
-//  Wire.beginTransmission(0x1E);
-//  Wire.send(0x06); //sends address to read from
-//  Wire.endTransmission(); //end transmission
-//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-//  buff[3] = Wire.receive(); // receive one byte
-//    
-//  Wire.beginTransmission(0x1E);
-//  Wire.send(0x07); //sends address to read from
-//  Wire.endTransmission(); //end transmission
-//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-//    buff[4] = Wire.receive(); // receive one byte
-//    
-//  Wire.beginTransmission(0x1E);
-//  Wire.send(0x08); //sends address to read from
-//  Wire.endTransmission(); //end transmission
-//  Wire.requestFrom(0x1E, 1); //request 1 bytes from device
-////  while(Wire.available())
-//    buff[5] = Wire.receive(); // receive one byte
-
-  data[0] = (buff[0] << 8) | buff[1];
-  data[1] = (buff[2] << 8) | buff[3];
-  data[2] = (buff[4] << 8) | buff[5];
-  
-  SerialUSB.println(buff[0]);
-  
-//  for(int i=0; i<3; i++)
-//  {
-//    SerialUSB.print(uint16(data[i]));
-//    SerialUSB.print("\t");
-//  }
-//  SerialUSB.println();
-  
+  Wire.beginTransmission(address);
+  Wire.send(reg); //select register 3, X MSB register
+  Wire.endTransmission();
+  Wire.requestFrom(address,1);
+  while(!Wire.available());
+  return Wire.receive();
 }
 
-
-void get_accelerometer(void)
+void get_compass()
 {
-  int i = 0;
-  uint16 buff[6];
-  int data[3];
+  int16 buff[6]={0};
+  for (int i = 0, reg = HMC5883L_REG_DATA_X_MSB; i<6; i++, reg++)
+    buff[i] = get_registor(HMC5883L_SLA,reg);
+    
+  compass_raw_x = ((buff[0] << 8) | buff[1]);
+  compass_raw_z = ((buff[2] << 8) | buff[3]);
+  compass_raw_y = ((buff[4] << 8) | buff[5]);
   
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x32); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[0] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x33); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[1] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x34); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[2] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x35); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[3] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x36); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[4] = Wire.receive(); // receive one byte
-    
-  Wire.beginTransmission(0xE5);
-  Wire.send(0x37); //sends address to read from
-  Wire.endTransmission(); //end transmission
-  Wire.requestFrom(0xE5, 1); //request 1 bytes from device
-  while(Wire.available())
-    buff[5] = Wire.receive(); // receive one byte
-
-  data[0] = (((int)buff[1]) << 8) | buff[0];
-  data[1] = (((int)buff[3]) << 8) | buff[2];
-  data[2] = (((int)buff[5]) << 8) | buff[4];
-  
-  for(int i=0; i<3; i++)
-  {
-    SerialUSB.print(uint16(data[i]));
-    SerialUSB.print("\t");
-  }
-  SerialUSB.println();
 }

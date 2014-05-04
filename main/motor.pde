@@ -66,3 +66,13 @@ void motorRight_backward(int speed)
   digitalWrite(motorRightSTBY, HIGH);
   pwmWrite(motorRightPWM, speed);
 }
+
+void motorFloat()
+{
+  digitalWrite(motorLeft1, LOW);
+  digitalWrite(motorLeft2, LOW);
+  digitalWrite(motorLeftSTBY, HIGH);
+  digitalWrite(motorRight1, LOW);
+  digitalWrite(motorRight2, LOW);
+  digitalWrite(motorRightSTBY, HIGH);
+}

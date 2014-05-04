@@ -21,8 +21,8 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
-double initialDiagonalLeft = 148;
-double initialDiagonalRight = 114;
+double initialDiagonalLeft = 175;
+double initialDiagonalRight = 125;
 
 //PID error
 int errorLeft = 0;
@@ -51,6 +51,17 @@ int errorCountLast = 0;
 int errorCountDiff = 0;
 int errorCountTotal = 0;
 
+int errorStopRight = 0;
+int errorStopRightLast = 0;
+int errorStopRightDiff = 0;
+int errorStopRightTotal = 0;
+int errorStopLeft = 0;
+int errorStopLeftLast = 0;
+int errorStopLeftDiff = 0;
+int errorStopLeftTotal = 0;
+int countsNeededLeft = 0;
+int countsNeededRight = 0;
+
 //PID time interval
 double timeDiff = 0;
 double timeLast = 0;
@@ -72,6 +83,10 @@ int PIDmode = 0;
 #define modeTurnRight 4
 #define modeTurnLeft 5
 #define modeTurnBack 6
+#define modeStraightOne 7
+#define modeFix 8
+#define modeSwitchStraight 9 //After turn, go straight immediately
+int turnAgain = false; //For Turning Back
 
 //PID Straight Modes
 int modeFollow = 0;
@@ -109,7 +124,6 @@ int currentX = 0;
 int currentY = 0;
 int compass = 0;
 
-//Turn timer
 int timeSet = 0;
 int timeNow = 0;
 
@@ -118,7 +132,12 @@ int movement = 0;
 int movementNow = 0;
 int movementLast = 0;
 
-
+//Compass Headings
+int headingInitial = 0;
+double heading = 0;
+short compass_raw_y = 0;
+short compass_raw_z = 0;
+short compass_raw_x = 0;
 
 
 #endif

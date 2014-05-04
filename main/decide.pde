@@ -1,27 +1,10 @@
 void decide()
-{
-  wallCase = 0;
-
-  //Checks Walls for Case  
-  if(distFront < 50)  wallCase += wallFront;
-  if(distRight < 80)  wallCase += wallRight;
-  if(distLeft < 80)  wallCase += wallLeft;
-
-  //FF = Flood Fill Value Left/Right/Front/Back
-  
-  //For Testing Only//
-  FFF = 1;
-  FFR = 2;
-  FFL = 3;
-  FFB = 4;
-  
-//  neighbor();
-  
+{  
   switch(wallCase) 
   {
     case (wallNone): //No Walls
       if ((FFF <= FFR) && (FFF <= FFL) && (FFF <= FFB))
-        PIDmode = modeStraight;
+        PIDmode = modeStraightOne;
       else if ((FFR <= FFF) && (FFR <= FFL) && (FFR <= FFB))
         PIDmode = modeTurnRight;  
       else if ((FFL <= FFF) && (FFL <= FFR) && (FFL <= FFB))
@@ -41,7 +24,7 @@ void decide()
       
     case(wallRight) :  //One Wall on the Right 
       if ((FFF <= FFL) && (FFF <= FFB))
-        PIDmode = modeStraight;
+        PIDmode = modeStraightOne;
       else if ((FFL <= FFF) && (FFL <= FFB))
         PIDmode = modeTurnLeft;
       else
@@ -57,7 +40,7 @@ void decide()
     
     case(wallLeft) :  //One wall on the left
       if ((FFF <= FFR) && (FFF <= FFB))
-        PIDmode = modeStraight;
+        PIDmode = modeStraightOne;
       else if ((FFR <= FFF) && (FFR <= FFB))
         PIDmode = modeTurnRight;
       else
@@ -73,7 +56,7 @@ void decide()
       
     case(wallRightLeft) : //One wall on the left, one on the Right 
       if (FFF <= FFB)
-        PIDmode = modeStraight;
+        PIDmode = modeStraightOne;
       else
         PIDmode = modeTurnBack;
      break;
@@ -82,50 +65,9 @@ void decide()
     case(wallAll) :  //surrounded by 3 walls
         PIDmode = modeTurnBack;
      break;
-  }
+  }   
   return;
 }
-
-//void neighbor ()
-//{
-//  switch(compass)
-//  {
-//    case north:
-//      FFF = maze[LOC(currentX,currentY+1)].fill_order;
-//      FFR = maze[LOC(currentX+1,currentY)].fill_order;
-//      FFL = maze[LOC(currentX-1,currentY)].fill_order;
-//      FFB = maze[LOC(currentX,currentY-1)].fill_order;
-//      break;
-//    case east:
-//      FFF = maze[LOC(currentX+1,currentY)].fill_order;
-//      FFR = maze[LOC(currentX,currentY-1)].fill_order;
-//      FFL = maze[LOC(currentX,currentY+1)].fill_order;
-//      FFB = maze[LOC(currentX-1,currentY)].fill_order;
-//      break;
-//    case west:
-//      FFF = maze[LOC(currentX-1,currentY)].fill_order;
-//      FFR = maze[LOC(currentX,currentY+1)].fill_order;
-//      FFL = maze[LOC(currentX,currentY-1)].fill_order;
-//      FFB = maze[LOC(currentX+1,currentY)].fill_order;
-//      break;
-//    case south:
-//      FFF = maze[LOC(currentX,currentY-1)].fill_order;
-//      FFR = maze[LOC(currentX-1,currentY)].fill_order;
-//      FFL = maze[LOC(currentX+1,currentY)].fill_order;
-//      FFB = maze[LOC(currentX,currentY+1)].fill_order;
-//      break;
-//  }
-//}
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   

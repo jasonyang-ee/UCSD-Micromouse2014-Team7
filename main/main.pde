@@ -33,10 +33,19 @@ void setup()
   attachInterrupt(encoderLeftCLK, encoderLeft_interrupts, RISING);
   attachInterrupt(encoderRightCLK, encoderRight_interrupts, RISING);
   
-  setup_maze(16);
+  motorLeft_go(0);
+  motorRight_go(0);
   
-//  PIDmode = modeStraight;
-//  modeFollow = followDiagonalRight;
+//  Wire.begin(0,1);
+//  delay(1000);
+//  set_compass();
+  
+  setup_maze(16);
+ 
+
+  
+  PIDmode = modeStop;
+  modeFollow = followEncoder;
 }
 
 void loop()
@@ -50,20 +59,17 @@ void loop()
   {
     case 3:
     {
-      //sprintf(
+      motorFloat();
+      SerialUSB.print(wheelCountLeft);
+      SerialUSB.print("\t");
+      SerialUSB.println(wheelCountRight);
       break;
     }
     case 2:
     {
-      motorLeft_go(0);
-      motorRight_go(0);
-      delay(300);
-      runAllSensor();
-      PID_follower();
-      SerialUSB.println(modeFollow);
+      set_heading();
       break;
     }
-  
     //sensor test mode
     case 1:
     {
@@ -71,14 +77,144 @@ void loop()
       motorRight_go(0);
       delay(500);
       runAllSensor();
-      sensor_calibration();
+      //sensor_calibration();
       sensor_read();
       break;
     }
   
     case 0:  //main searching mode input by user
     {
-      solve_maze();
+      runAllSensor();
+      //PID_follower();
+      if(PIDmode == modeStraight)
+      {
+        PID();
+        if(distFront < 45) PIDmode = modeStop;
+//        if(distFront < 240)
+//        {
+//          wheelCountLeft = 0;
+//          wheelCountRight = 0;
+//          modeFollow = followEncoder;
+//          if(distFront < 40)  PIDmode = modeStop;
+//        }
+      }
+      
+      if(PIDmode == modeStraightOne)
+      {  //Goes Straight One Cell, Will Activate Fist Everytime
+        PIDmode = modeStraight;
+        PID_follower();
+        PID();
+        PIDmode = modeStraightOne;
+        if(wheelCountRight >= 420 && wheelCountLeft >= 420)
+        {
+          motorLeft_go(0);
+          motorRight_go(0);
+          countsNeededLeft = 420;
+          countsNeededRight = 420;
+          //if(modeFollow == followEncoder)PIDmode = modeFix;
+          //else 
+          PIDmode = modeStop;
+        }
+        if(distFront < 30) PIDmode = modeStop;
+      }
+
+       ///////////////////TURNING///////////////////////////////
+      if(PIDmode == modeTurnRight)
+      {
+        motorLeft_go (30000);
+        if (wheelCountLeft >= 165)
+        {
+          motorLeft_go(0);
+          motorRight_go (-30000);
+          if(wheelCountRight <= -165)
+          {
+            motorLeft_go(0);
+            motorRight_go(0);
+            countsNeededLeft = 165;
+            countsNeededRight = -165;
+            PIDmode = modeFix;
+          }
+        }
+      }
+      
+      if(PIDmode == modeTurnLeft)
+      {
+        motorRight_go (30000);
+        if (wheelCountRight >= 164)
+        {
+          motorRight_go(0);
+          motorLeft_go (-30000);
+          if(wheelCountLeft <= -164)
+          {
+            motorLeft_go(0);
+            motorRight_go(0);
+            countsNeededLeft = -164;
+            countsNeededRight = 164;
+            PIDmode = modeFix;
+          }
+        }
+      }
+      
+      if(PIDmode == modeTurnBack)
+      {
+        motorLeft_go (30000);
+        if (wheelCountLeft >= 165)
+        {
+          motorLeft_go(0);
+          motorRight_go (-30000);
+          if(wheelCountRight <= -165)
+          {
+            motorLeft_go(0);
+            motorRight_go(0);
+            countsNeededLeft = 165;
+            countsNeededRight = -165;
+            turnAgain = true;
+            PIDmode = modeFix;
+          }
+        }
+      }
+      
+      if(PIDmode == modeFix)
+      {
+        runAllSensor();
+        PID();
+//        if(errorStopRight == 1 || errorStopLeft == 1) //Since Error of 1 may stop motors with too low PWM
+//        {
+//          wheelCountRight = countsNeededRight;
+//          wheelCountLeft = countsNeededLeft;
+//        }
+        if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
+        {
+          motorLeft_go(0);
+          motorRight_go(0);
+          delay(100);
+          if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
+          {
+            PIDmode = modeStop;
+            if(turnAgain)
+            {
+              motorLeft_go(0);
+              motorRight_go(0);
+              delay(500);
+              wheelCountLeft = 0;
+              wheelCountRight = 0;
+              turnAgain = false;
+              PIDmode = modeTurnRight;
+            }
+          }
+        }
+      }
+      
+      if(PIDmode == modeStop)
+      {
+        motorLeft_go(0);
+        motorRight_go(0);
+        delay(500);
+        wheelCountLeft = 0;
+        wheelCountRight = 0;
+        solve_maze();
+        //PIDmode = modeTurnRight;
+      }
       break;
     }
   }//end switch

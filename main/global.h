@@ -21,8 +21,8 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
-double initialDiagonalLeft = 175;
-double initialDiagonalRight = 125;
+double initialDiagonalLeft = 70;
+double initialDiagonalRight = 80;
 
 //PID error
 int errorLeft = 0;
@@ -138,6 +138,10 @@ double heading = 0;
 short compass_raw_y = 0;
 short compass_raw_z = 0;
 short compass_raw_x = 0;
+
+//FloodFill Directions
+int toCenter = false;
+int toStart = false;
 
 
 #endif

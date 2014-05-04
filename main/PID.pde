@@ -67,21 +67,22 @@ void PID()
     }
     case modeFix:
     {
-      int Kp = 4000;
-      int Kd = 70;
+      int Kp = 2000;
+      int Kd = 100;
       int Ki = 0;
-      
-      
+            
       int correctionRight = round(Kp * errorStopRight + Kd*(errorStopRightDiff)/.0001 + Ki*errorStopRightTotal);
       
-      Kp = 4000;
-      Kd = 70;
+      Kp = 2000;
+      Kd = 100;
       Ki = 0;
       
       int correctionLeft = round(Kp * errorStopLeft + Kd*(errorStopLeftDiff)/.0001 + Ki*errorStopLeftTotal);
       
-      if(correctionRight == 4000 || correctionRight == -4000) wheelCountRight = countsNeededRight;
-      if(correctionLeft == 4000 || correctionLeft == -4000) wheelCountLeft = countsNeededLeft;
+      if(correctionRight == 2000 || correctionRight == -2000) wheelCountRight = countsNeededRight;
+      if(correctionLeft == 2000 || correctionLeft == -2000) wheelCountLeft = countsNeededLeft;
+      if(errorStopRight >= 33) wheelCountRight = countsNeededRight;
+      if(errorStopLeft >= 33) wheelCountLeft = countsNeededLeft;
       
       motorRight_go(correctionRight);
       motorLeft_go(correctionLeft);
@@ -92,15 +93,19 @@ void PID()
 //set PID straight follow state
 void PID_follower()
 {
-  if(distDiagonalRight > 210 && distDiagonalLeft > 250 && (distRight > 60 || distLeft > 60))
+  if(distDiagonalRight > 95 && distDiagonalLeft > 95 && (distRight > 60 || distLeft > 60))
     modeFollow = followEncoder;
-  else if(distDiagonalRight > 210 && distDiagonalLeft < 250 && (distRight > 60 || distLeft > 60))
+  else if(distDiagonalRight > 95 && distDiagonalLeft < 95 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalLeft;
+    if(distFront<50)
+      modeFollow = followEncoder;
   }
-  else if(distDiagonalRight < 210 && distDiagonalLeft > 250 && (distRight > 60 || distLeft > 60))
+  else if(distDiagonalRight < 95 && distDiagonalLeft > 95 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalRight;
+    if(distFront<50)
+      modeFollow = followEncoder;
   } 
   else if(distRight < 60 && distLeft < 60)
     modeFollow = followSide;  

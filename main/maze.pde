@@ -63,7 +63,7 @@ void set_cell_wall(uint8 c, uint8 d){
 }
 
 
-void setup_maze(int size){    //Took out goal, since goal should always be at (8,8)(8,7)(7,8)(7,7).
+void setup_maze(int size){
   maze_size = size;	
   for(uint8 x = 0; x<maze_size; x++){
     for(uint8 y = 0; y<maze_size; y++){
@@ -87,12 +87,7 @@ void setup_maze(int size){    //Took out goal, since goal should always be at (8
   
   // additionally set east wall of starting cell
   set_cell_wall(LOC(0,0), 1);
-  // and set up goal
-  goal = LOC(4,4);        //TESTING MAZE
-  maze[LOC(4,4)].is_goal = 1;
-  maze[LOC(7,8)].is_goal = 1;
-  maze[LOC(8,7)].is_goal = 1;
-  maze[LOC(7,7)].is_goal = 1;     
+    
 }
 
 // store the distance to the goal in each cell
@@ -112,6 +107,22 @@ void flood_fill(uint8 cur, uint8 dist){
 // drive the mouse down the distance gradient to the goal
 void solve_maze()
 {
+  if(maze[mouse_loc].is_goal)
+  {
+   if(toCenter)
+   {
+     toCenter = false;
+     toStart = true;
+   }
+   else if (toStart)
+   {
+     toStart = false;
+     toCenter = true;
+     //waitForButtonPress();
+     //mouse_dir = 0;
+   }
+  }
+  
   scan_walls();
   
   for(int x = 0; x < maze_size; x++)
@@ -120,6 +131,25 @@ void solve_maze()
     {
       maze[LOC(x,y)].fill_order = 255;
     }
+  }
+  
+  if(toCenter)
+  {
+    goal = LOC(4,4);        //TESTING MAZE
+    maze[LOC(4,4)].is_goal = 1;
+    maze[LOC(7,8)].is_goal = 1;
+    maze[LOC(8,7)].is_goal = 1;
+    maze[LOC(7,7)].is_goal = 1;  
+    maze[LOC(0,0)].is_goal = 0;
+  }
+  else if(toStart)
+  {
+    goal = LOC(0,0);
+    maze[LOC(4,4)].is_goal = 0;
+    maze[LOC(7,8)].is_goal = 0;
+    maze[LOC(8,7)].is_goal = 0;
+    maze[LOC(7,7)].is_goal = 0;  
+    maze[LOC(0,0)].is_goal = 1;
   }
   
   flood_fill(goal,0);

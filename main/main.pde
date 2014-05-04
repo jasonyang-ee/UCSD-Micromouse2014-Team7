@@ -41,8 +41,7 @@ void setup()
 //  set_compass();
   
   setup_maze(16);
- 
-
+  toCenter = true;
   
   PIDmode = modeStop;
   modeFollow = followEncoder;
@@ -67,7 +66,8 @@ void loop()
     }
     case 2:
     {
-      set_heading();
+      waitForButtonPress();
+      SerialUSB.println("BEEP");
       break;
     }
     //sensor test mode
@@ -103,6 +103,7 @@ void loop()
       {  //Goes Straight One Cell, Will Activate Fist Everytime
         PIDmode = modeStraight;
         PID_follower();
+        //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
         if(wheelCountRight >= 420 && wheelCountLeft >= 420)
@@ -122,16 +123,17 @@ void loop()
       if(PIDmode == modeTurnRight)
       {
         motorLeft_go (30000);
-        if (wheelCountLeft >= 165)
+        if (wheelCountLeft >= 168)
         {
           motorLeft_go(0);
+          delay(50);
           motorRight_go (-30000);
-          if(wheelCountRight <= -165)
+          if(wheelCountRight <= -168)
           {
             motorLeft_go(0);
             motorRight_go(0);
-            countsNeededLeft = 165;
-            countsNeededRight = -165;
+            countsNeededLeft = 168;
+            countsNeededRight = -168;
             PIDmode = modeFix;
           }
         }
@@ -140,16 +142,17 @@ void loop()
       if(PIDmode == modeTurnLeft)
       {
         motorRight_go (30000);
-        if (wheelCountRight >= 164)
+        if (wheelCountRight >= 168)
         {
           motorRight_go(0);
+          delay(50);
           motorLeft_go (-30000);
-          if(wheelCountLeft <= -164)
+          if(wheelCountLeft <= -168)
           {
             motorLeft_go(0);
             motorRight_go(0);
-            countsNeededLeft = -164;
-            countsNeededRight = 164;
+            countsNeededLeft = -168;
+            countsNeededRight = 168;
             PIDmode = modeFix;
           }
         }
@@ -158,16 +161,17 @@ void loop()
       if(PIDmode == modeTurnBack)
       {
         motorLeft_go (30000);
-        if (wheelCountLeft >= 165)
+        if (wheelCountLeft >= 168)
         {
           motorLeft_go(0);
+          delay(50);
           motorRight_go (-30000);
-          if(wheelCountRight <= -165)
+          if(wheelCountRight <= -168)
           {
             motorLeft_go(0);
             motorRight_go(0);
-            countsNeededLeft = 165;
-            countsNeededRight = -165;
+            countsNeededLeft = 168;
+            countsNeededRight = -168;
             turnAgain = true;
             PIDmode = modeFix;
           }
@@ -195,7 +199,7 @@ void loop()
             {
               motorLeft_go(0);
               motorRight_go(0);
-              delay(500);
+              delay(250);
               wheelCountLeft = 0;
               wheelCountRight = 0;
               turnAgain = false;
@@ -209,7 +213,7 @@ void loop()
       {
         motorLeft_go(0);
         motorRight_go(0);
-        delay(500);
+        delay(250);
         wheelCountLeft = 0;
         wheelCountRight = 0;
         solve_maze();

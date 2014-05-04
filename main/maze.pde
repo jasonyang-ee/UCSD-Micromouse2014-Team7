@@ -73,21 +73,20 @@ void setup_maze(int size){
       if(x==maze_size-1) set_cell_wall(LOC(x,y),1);
     }
   }
-  for(int x = 0; x < maze_size; x++)
-  {
-    for(int y = 0; y < maze_size; y++)
-    {
-      maze[LOC(x,y)].fill_order = 255;
-    }
-  }
+//  for(int x = 0; x < maze_size; x++)
+//  {
+//    for(int y = 0; y < maze_size; y++)
+//    {
+//      maze[LOC(x,y)].fill_order = 255;
+//    }
+//  }
   
 //  uint8 i = 0;
 //  do maze[i++].fill_order = 255;
 //  while(i);
   
   // additionally set east wall of starting cell
-  set_cell_wall(LOC(0,0), 1);
-    
+  set_cell_wall(LOC(0,0), 1);    
 }
 
 // store the distance to the goal in each cell
@@ -107,21 +106,11 @@ void flood_fill(uint8 cur, uint8 dist){
 // drive the mouse down the distance gradient to the goal
 void solve_maze()
 {
+
+  //if at goal, won't move until position reset.
   if(maze[mouse_loc].is_goal)
-  {
-   if(toCenter)
-   {
-     toCenter = false;
-     toStart = true;
-   }
-   else if (toStart)
-   {
-     toStart = false;
-     toCenter = true;
-     //waitForButtonPress();
-     //mouse_dir = 0;
-   }
-  }
+    return;
+  
   
   scan_walls();
   
@@ -133,25 +122,12 @@ void solve_maze()
     }
   }
   
-  if(toCenter)
-  {
-    goal = LOC(4,4);        //TESTING MAZE
-    maze[LOC(4,4)].is_goal = 1;
-    maze[LOC(7,8)].is_goal = 1;
-    maze[LOC(8,7)].is_goal = 1;
-    maze[LOC(7,7)].is_goal = 1;  
-    maze[LOC(0,0)].is_goal = 0;
-  }
-  else if(toStart)
-  {
-    goal = LOC(0,0);
-    maze[LOC(4,4)].is_goal = 0;
-    maze[LOC(7,8)].is_goal = 0;
-    maze[LOC(8,7)].is_goal = 0;
-    maze[LOC(7,7)].is_goal = 0;  
-    maze[LOC(0,0)].is_goal = 1;
-  }
-  
+  goal = LOC(8,8);
+  maze[LOC(8,8)].is_goal = 1;
+  maze[LOC(7,8)].is_goal = 1;
+  maze[LOC(8,7)].is_goal = 1;
+  maze[LOC(7,7)].is_goal = 1;
+
   flood_fill(goal,0);
 
   FFF = CELL_IN_DIR(mouse_loc,((mouse_dir + 0)%4)).fill_order;
@@ -175,23 +151,12 @@ void solve_maze()
 //  if(maze[mouse_loc].walls & (1<<2)) SerialUSB.print("South  ");
 //  SerialUSB.println();
 
-  //  //testing
-  //  FFF = 1;
-  //  FFR = 3;
-  //  FFL = 2;
-  //  FFB = 4;
-
   wallCase = 0;
 
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 0)%4))) wallCase += wallFront;
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 1)%4))) wallCase += wallRight;
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 3)%4))) wallCase += wallLeft;
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 2)%4))) FFB = 255;
-
-  //Testing
-  //  if(distFront < 80) wallCase += wallFront;
-  //  if(distRight < 80) wallCase += wallRight;
-  //  if(distLeft < 80) wallCase += wallLeft;
 
 
   decide();
@@ -227,6 +192,11 @@ void scan_walls()
   }
 }
 
+void reset_position()
+{
+  mouse_loc = LOC(0,0);
+  mouse_dir = 0;
+}
 
 
 

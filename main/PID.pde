@@ -12,7 +12,7 @@ void PID()
           //Follows Side Sensors
           //Gain values for PID
           //450 35 for 10000
-          int Kp = 200;
+          int Kp = 250;
           int Kd = 10;
           int Ki = 0;
     
@@ -86,6 +86,7 @@ void PID()
       
       motorRight_go(correctionRight);
       motorLeft_go(correctionLeft);
+      break;
     }
   }
 }

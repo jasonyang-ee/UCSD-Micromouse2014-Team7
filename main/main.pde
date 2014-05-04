@@ -41,7 +41,9 @@ void setup()
 //  set_compass();
   
   setup_maze(16);
-  toCenter = true;
+  reset_position();
+  //toCenter = true;
+  priorityRight = true;
   
   PIDmode = modeStop;
   modeFollow = followEncoder;
@@ -51,34 +53,32 @@ void loop()
 {
   //char* buffer;
   //read user setting
+  
+  if(systemMode != board_switch()) delay(5000);
+  
   systemMode = board_switch();
   board_display();
   
   switch(systemMode)
   {
     case 3:
-    {
+    { //Not currently used
       motorFloat();
-      SerialUSB.print(wheelCountLeft);
-      SerialUSB.print("\t");
-      SerialUSB.println(wheelCountRight);
+      delay(500);
+      runAllSensor();
+      sensor_read();
+
       break;
     }
     case 2:
     {
-      waitForButtonPress();
-      SerialUSB.println("BEEP");
+      //Switches to Left Priority, Cannot Switch Back
+      if(priorityRight) priorityRight = false;
       break;
     }
-    //sensor test mode
     case 1:
     {
-      motorLeft_go(0);
-      motorRight_go(0);
-      delay(500);
-      runAllSensor();
-      //sensor_calibration();
-      sensor_read();
+      reset_position();
       break;
     }
   
@@ -106,17 +106,23 @@ void loop()
         //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
-        if(wheelCountRight >= 420 && wheelCountLeft >= 420)
+        if((wheelCountRight >= 440 && wheelCountLeft >= 440) && modeFollow == followEncoder)
         {
           motorLeft_go(0);
           motorRight_go(0);
-          countsNeededLeft = 420;
-          countsNeededRight = 420;
+          countsNeededLeft = 440;
+          countsNeededRight = 440;
           //if(modeFollow == followEncoder)PIDmode = modeFix;
           //else 
           PIDmode = modeStop;
         }
-        if(distFront < 30) PIDmode = modeStop;
+        else if(wheelCountRight >= 440 && wheelCountLeft >= 440)
+        {
+          motorLeft_go(0);
+          motorRight_go(0);
+          PIDmode = modeStop;
+        }
+        if(distFront < 25) PIDmode = modeStop;
       }
 
        ///////////////////TURNING///////////////////////////////
@@ -217,7 +223,8 @@ void loop()
         wheelCountLeft = 0;
         wheelCountRight = 0;
         solve_maze();
-        //PIDmode = modeTurnRight;
+        //If At Goal, will Stop Indefinitely Until Switch Case
+        
       }
       break;
     }

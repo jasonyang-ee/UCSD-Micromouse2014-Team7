@@ -143,5 +143,8 @@ short compass_raw_x = 0;
 int toCenter = false;
 int toStart = false;
 
+//Priorities
+int priorityRight = true;
+
 
 #endif

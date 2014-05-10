@@ -78,11 +78,6 @@ void PID()
       Ki = .01;
       
       int correctionLeft = round(Kp * errorStopLeft + Kd*(errorStopLeftDiff)/.0001 + Ki*errorStopLeftTotal);
-      
-//      if(correctionRight == 2000 || correctionRight == -1000) wheelCountRight = countsNeededRight;
-//      if(correctionLeft == 2000 || correctionLeft == -1000) wheelCountLeft = countsNeededLeft;
-//      if(errorStopRight >= 33) wheelCountRight = countsNeededRight;
-//      if(errorStopLeft >= 33) wheelCountLeft = countsNeededLeft;
 
       if(correctionRight > 0) correctionRight += 3000;
       if(correctionRight < 0) correctionRight -= 3000;
@@ -95,8 +90,36 @@ void PID()
     }
     case modeFrontFix:
     {
-      
-      
+      switch(modeFix)
+      {
+        case fixFront:
+        {
+          //Gain Values for PID
+          int Kp = 1000;
+          int Kd = 0;
+          int Ki = 0;
+    
+          int correction = round(Kp * errorFront + Kd*(errorFrontDiff)/timeDiff + Ki*errorFrontTotal);
+        
+          motorRight_go(correction);
+          motorLeft_go(correction);
+          
+          break;
+        }
+        case fixDiagonals:
+        {
+          //Gain Values for PID
+          int Kp = 1000;
+          int Kd = 0;
+          int Ki = 0;
+    
+          int correction = round(Kp * errorDiagonal + Kd*(errorDiagonalDiff)/timeDiff + Ki*errorDiagonalTotal);
+        
+          motorRight_go(correction);
+          motorLeft_go(-correction);
+          break;
+        }
+      }
       break;
     }
   }

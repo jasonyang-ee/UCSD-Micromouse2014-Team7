@@ -25,6 +25,10 @@ double initialDiagonalLeft = 70;
 double initialDiagonalRight = 80;
 
 //PID error
+int errorFront = 0;
+int errorFrontLast = 0;
+int errorFrontDiff = 0;
+int errorFrontTotal = 0;
 int errorLeft = 0;
 int errorLeftLast = 0;
 int errorLeftDiff = 0;
@@ -38,6 +42,9 @@ int errorSideLast = 0;
 int errorSideDiff = 0;
 int errorSideTotal = 0;
 int errorDiagonal = 0;
+int errorDiagonalLast = 0;
+int errorDiagonalDiff = 0;
+int errorDiagonalTotal = 0;
 int errorDiagonalLeftLast = 0;
 int errorDiagonalLeft = 0;
 int errorDiagonalLeftDiff = 0;

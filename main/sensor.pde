@@ -32,6 +32,8 @@ void runAllSensor()
   calculateErrorDiagonalRight();
   calculateErrorCount();
   calculateErrorStop();
+  calculateErrorFront();
+  calculateErrorDiagonal();
 }
 
 //print out voltage
@@ -87,21 +89,21 @@ double convertDistance(int volt, int c)
   //Front
   if(c==1)
   {
-    if(volt>190)  return ( 10*13409*pow(x,-1.052)� );
+    if(volt>190)  return (10*13409*pow(x,-1.052));
     else  return 500;
   }
   
   //Left
   if(c==2)
   {
-    if(volt>340)  return ( 10*50000000*pow(x,-2.139) );
+    if(volt>340)  return (10*50000000*pow(x,-2.139));
     else return 500;
   }
   
   //Right
   if(c==3)
   {
-    if(volt>800)  return ( 10*10000000*pow(x,-1.935�) );
+    if(volt>800)  return (10*10000000*pow(x,-1.935));
     else return 500;
   }
   
@@ -109,14 +111,14 @@ double convertDistance(int volt, int c)
   if(c==4)
   {
 
-    if(volt>230)  return ( 10*2583*pow(x,-0.793�) );
+    if(volt>230)  return (10*2583*pow(x,-0.793));
     else  return 500;
   }
   
   //Front Right
   if(c==5)
   {
-    if(volt>250)  return ( 10*22607*pow(x,-1.124) );
+    if(volt>250)  return (10*22607*pow(x,-1.124));
     else  return 500;
   }
   
@@ -190,4 +192,20 @@ void calculateErrorStop()
   errorStopLeft = (countsNeededLeft - wheelCountLeft);
   errorStopLeftDiff = errorStopLeft - errorStopLeftLast;
   errorStopLeftTotal += errorStopLeft;
+}
+
+void calculateErrorFront()
+{
+  errorFrontLast = errorFront;
+  errorFront = (distFront - 21.3);
+  errorFrontDiff = errorFront - errorFrontLast;
+  errorFrontTotal += errorFront;
+}
+
+void calculateErrorDiagonal()
+{
+  errorDiagonalLast = errorDiagonal;
+  errorDiagonal = ((distDiagonalLeft - distDiagonalRight) - 5);
+  errorDiagonalDiff = errorDiagonal - errorDiagonalLast;
+  errorDiagonalTotal += errorDiagonal;
 }

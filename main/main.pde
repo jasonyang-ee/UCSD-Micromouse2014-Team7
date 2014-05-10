@@ -61,12 +61,12 @@ void loop()
     case 3:
     { //Not currently used
       motorFloat();
-      delay(500);
+//      delay(500);
       runAllSensor();
-      sensor_read();
-//      SerialUSB.print(wheelCountLeft);
-//      SerialUSB.print("\t");
-//      SerialUSB.println(wheelCountRight);
+//      sensor_read();
+      SerialUSB.print(wheelCountLeft);
+      SerialUSB.print("\t");
+      SerialUSB.println(wheelCountRight);
       break;
     }
     case 2:
@@ -99,7 +99,7 @@ void loop()
       if(PIDmode == modeStraightOne)
       {  //Goes Straight One Cell, Will Activate First Everytime
         PIDmode = modeStraight;
-        //PID_follower();
+        PID_follower();
         //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
@@ -163,7 +163,7 @@ void loop()
         if(distLeft < 40)
         {
           turnAgain = modeTurnLeft;
-          PIDmode = modeTurnLeft
+          PIDmode = modeTurnLeft;
         }
         else
         {
@@ -183,10 +183,10 @@ void loop()
           delay(100);
           if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
           {
-            if(distFront < 40)
-              PIDmode = modeFrontFix;
-            else
-            {
+//            if(distFront < 40)
+//              PIDmode = modeFrontFix;
+//            else
+//            {
               PIDmode = modeStop;
               if(turnAgain)
               {
@@ -202,12 +202,13 @@ void loop()
                 else if(turnAgain == modeTurnLeft)
                   PIDmode = modeTurnLeft;
                 turnAgain = false;
-              }
+//              }
             }
           }
         }
       }
       
+      if(PIDmode == modeFrontFix) PIDmode = modeStop;
       if(PIDmode == modeFrontFix)
       {
         runAllSensor();

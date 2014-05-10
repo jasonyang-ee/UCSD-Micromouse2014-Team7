@@ -106,6 +106,15 @@ void flood_fill(uint8 cur, uint8 dist){
 // drive the mouse down the distance gradient to the goal
 void solve_maze()
 {
+//  if(checkDistance)
+//  {
+//    int distance = round((wheelCountRight + wheelCountLeft)*.5);
+//    distance = round(distance/440);
+//    for(int i = 0; i < distance; i++)
+//      mouse_loc = LOC_IN_DIR(mouse_loc,mouse_dir);
+//    checkDistance = false;
+//  }    
+    
 
   //if at goal, won't move until position reset.
   if(maze[mouse_loc].is_goal)
@@ -158,7 +167,6 @@ void solve_maze()
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 3)%4))) wallCase += wallLeft;
   if(maze[mouse_loc].walls & (1<<((mouse_dir + 2)%4))) FFB = 255;
 
-
   decide();
 
   if(PIDmode == modeStraightOne)
@@ -169,7 +177,7 @@ void solve_maze()
     mouse_dir--;
   else if(PIDmode == modeTurnBack)
     mouse_dir ^= 2;
-  mouse_dir %= 4;
+  mouse_dir %= 4; 
 }
 
 

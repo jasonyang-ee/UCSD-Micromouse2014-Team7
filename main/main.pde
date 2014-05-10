@@ -42,7 +42,6 @@ void setup()
   
   setup_maze(16);
   reset_position();
-  //toCenter = true;
   priorityRight = true;
   
   PIDmode = modeStop;
@@ -51,10 +50,8 @@ void setup()
 
 void loop()
 {
-  //char* buffer;
-  //read user setting
   
-  if(systemMode != board_switch()) delay(5000);
+  //if(systemMode != board_switch()) delay(5000);
   
   systemMode = board_switch();
   board_display();
@@ -67,11 +64,15 @@ void loop()
       delay(500);
       runAllSensor();
       sensor_read();
-
+//      SerialUSB.print(wheelCountLeft);
+//      SerialUSB.print("\t");
+//      SerialUSB.println(wheelCountRight);
       break;
     }
     case 2:
     {
+//      motorLeft_go(4000);
+//      motorRight_go(4000);
       //Switches to Left Priority, Cannot Switch Back
       if(priorityRight) priorityRight = false;
       break;
@@ -85,114 +86,96 @@ void loop()
     case 0:  //main searching mode input by user
     {
       runAllSensor();
-      //PID_follower();
-      if(PIDmode == modeStraight)
-      {
-        PID();
-        if(distFront < 45) PIDmode = modeStop;
-//        if(distFront < 240)
-//        {
-//          wheelCountLeft = 0;
-//          wheelCountRight = 0;
-//          modeFollow = followEncoder;
-//          if(distFront < 40)  PIDmode = modeStop;
-//        }
-      }
+      
+//      if(PIDmode == modeStraight)
+//      {
+//        modeFollow = followBoth;
+//        PID();
+//        if(distFront < 45) PIDmode = modeStop;
+//        if(wheelCountRight >= 400 && wheelCountLeft >= 400)
+//          solve_maze();
+//      }
       
       if(PIDmode == modeStraightOne)
-      {  //Goes Straight One Cell, Will Activate Fist Everytime
+      {  //Goes Straight One Cell, Will Activate First Everytime
         PIDmode = modeStraight;
-        PID_follower();
+        //PID_follower();
         //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
-        if((wheelCountRight >= 440 && wheelCountLeft >= 440) && modeFollow == followEncoder)
+        if(wheelCountRight >= 440 && wheelCountLeft >= 440)
         {
-          motorLeft_go(0);
-          motorRight_go(0);
-          countsNeededLeft = 440;
-          countsNeededRight = 440;
-          //if(modeFollow == followEncoder)PIDmode = modeFix;
-          //else 
-          PIDmode = modeStop;
+          if(distFront < 40)
+            PIDmode = modeFrontFix;
+          else
+            PIDmode = modeStop;
         }
-        else if(wheelCountRight >= 440 && wheelCountLeft >= 440)
-        {
-          motorLeft_go(0);
-          motorRight_go(0);
-          PIDmode = modeStop;
-        }
-        if(distFront < 25) PIDmode = modeStop;
+        if(distFront < 25) PIDmode = modeFrontFix;
       }
 
        ///////////////////TURNING///////////////////////////////
       if(PIDmode == modeTurnRight)
       {
-        motorLeft_go (30000);
-        if (wheelCountLeft >= 168)
+        motorLeft_go (20000);
+        motorRight_go (-20000);
+        if (wheelCountLeft >= 171)
         {
           motorLeft_go(0);
-          delay(50);
-          motorRight_go (-30000);
-          if(wheelCountRight <= -168)
-          {
-            motorLeft_go(0);
-            motorRight_go(0);
-            countsNeededLeft = 168;
-            countsNeededRight = -168;
-            PIDmode = modeFix;
-          }
         }
-      }
+        if(wheelCountRight <= -171)
+        {
+          motorRight_go(0);
+        }
+        if(wheelCountRight <= -171 && wheelCountLeft >= 171)
+        {
+          motorRight_go(0);
+          motorLeft_go(0);
+          countsNeededLeft = 171;
+          countsNeededRight = -171;
+          PIDmode = modeCountFix;
+        }
+       }
       
       if(PIDmode == modeTurnLeft)
       {
-        motorRight_go (30000);
-        if (wheelCountRight >= 168)
+        motorRight_go (20000);
+        motorLeft_go (-20000);
+        if (wheelCountRight >= 171)
         {
           motorRight_go(0);
-          delay(50);
-          motorLeft_go (-30000);
-          if(wheelCountLeft <= -168)
-          {
-            motorLeft_go(0);
-            motorRight_go(0);
-            countsNeededLeft = -168;
-            countsNeededRight = 168;
-            PIDmode = modeFix;
-          }
+        }
+        if(wheelCountLeft <= -171)
+        {
+          motorLeft_go(0);
+        }
+        if(wheelCountRight >= 171 && wheelCountLeft <= -171)
+        {
+          motorRight_go(0);
+          motorLeft_go(0);
+          countsNeededLeft = -171;
+          countsNeededRight = 171;
+          PIDmode = modeCountFix;
         }
       }
       
       if(PIDmode == modeTurnBack)
       {
-        motorLeft_go (30000);
-        if (wheelCountLeft >= 168)
+        if(distLeft < 40)
         {
-          motorLeft_go(0);
-          delay(50);
-          motorRight_go (-30000);
-          if(wheelCountRight <= -168)
-          {
-            motorLeft_go(0);
-            motorRight_go(0);
-            countsNeededLeft = 168;
-            countsNeededRight = -168;
-            turnAgain = true;
-            PIDmode = modeFix;
-          }
+          turnAgain = modeTurnLeft;
+          PIDmode = modeTurnLeft
+        }
+        else
+        {
+          turnAgain = modeTurnRight;
+          PIDmode = modeTurnRight;
         }
       }
       
-      if(PIDmode == modeFix)
+      if(PIDmode == modeCountFix)
       {
         runAllSensor();
         PID();
-//        if(errorStopRight == 1 || errorStopLeft == 1) //Since Error of 1 may stop motors with too low PWM
-//        {
-//          wheelCountRight = countsNeededRight;
-//          wheelCountLeft = countsNeededLeft;
-//        }
         if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
         {
           motorLeft_go(0);
@@ -200,31 +183,74 @@ void loop()
           delay(100);
           if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
           {
-            PIDmode = modeStop;
-            if(turnAgain)
+            if(distFront < 40)
+              PIDmode = modeFrontFix;
+            else
             {
-              motorLeft_go(0);
-              motorRight_go(0);
-              delay(250);
-              wheelCountLeft = 0;
-              wheelCountRight = 0;
-              turnAgain = false;
-              PIDmode = modeTurnRight;
+              PIDmode = modeStop;
+              if(turnAgain)
+              {
+                motorLeft_go(0);
+                motorRight_go(0);
+                delay(200);
+                wheelCountLeft = 0;
+                wheelCountRight = 0;
+                errorStopRightTotal = 0;
+                errorStopLeftTotal = 0;
+                if(turnAgain == modeTurnRight)
+                  PIDmode = modeTurnRight;
+                else if(turnAgain == modeTurnLeft)
+                  PIDmode = modeTurnLeft;
+                turnAgain = false;
+              }
             }
           }
         }
       }
       
+      if(PIDmode == modeFrontFix)
+      {
+        runAllSensor();
+        PID();
+        if(abs(errorFront) >= 5)
+          modeFix = fixFront;
+        else if(abs(errorDiagonal) >= 5)
+          modeFix = fixDiagonals;
+        else if (abs(errorFront) <= 5 && abs(errorDiagonal) <= 5)
+        {
+          modeFix = fixFront; //Always Starts with Front Fix Next Time
+          PIDmode = modeStop;
+          if(turnAgain)
+          {
+            motorLeft_go(0);
+            motorRight_go(0);
+            delay(200);
+            wheelCountLeft = 0;
+            wheelCountRight = 0;
+            errorStopRightTotal = 0;
+            errorStopLeftTotal = 0;
+            if(turnAgain == modeTurnRight)
+              PIDmode = modeTurnRight;
+            else if(turnAgain == modeTurnLeft)
+              PIDmode = modeTurnLeft;
+            turnAgain = false;
+          }
+        }
+      }
+        
       if(PIDmode == modeStop)
       {
         motorLeft_go(0);
         motorRight_go(0);
-        delay(250);
+        delay(100);
         wheelCountLeft = 0;
         wheelCountRight = 0;
+        errorCountTotal = 0;
+        errorStopRightTotal = 0;
+        errorStopLeftTotal = 0;
         solve_maze();
         //If At Goal, will Stop Indefinitely Until Switch Case
-        
+        //PIDmode = modeTurnBack ;
       }
       break;
     }

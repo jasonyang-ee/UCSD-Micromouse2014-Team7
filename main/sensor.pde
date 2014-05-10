@@ -83,25 +83,25 @@ int runSensor(int sensorRef)
 double convertDistance(int volt, int c)
 {
   double x = volt;
-  
+ 
   //Front
   if(c==1)
   {
-    if(volt>190)  return (10*17193*pow(x,-1.113));
+    if(volt>190)  return ( 10*13409*pow(x,-1.052)� );
     else  return 500;
   }
   
   //Left
   if(c==2)
   {
-    if(volt>340)  return (10*20000000*pow(x,-2.043));
+    if(volt>340)  return ( 10*50000000*pow(x,-2.139) );
     else return 500;
   }
   
   //Right
   if(c==3)
   {
-    if(volt>800)  return (10*40000000*pow(x,-2.073));
+    if(volt>800)  return ( 10*10000000*pow(x,-1.935�) );
     else return 500;
   }
   
@@ -109,16 +109,17 @@ double convertDistance(int volt, int c)
   if(c==4)
   {
 
-    if(volt>230)  return (10*5144.6*pow(x,-0.923));
+    if(volt>230)  return ( 10*2583*pow(x,-0.793�) );
     else  return 500;
   }
   
   //Front Right
   if(c==5)
   {
-    if(volt>250)  return (10*8442.9*pow(x,-1.034));
+    if(volt>250)  return ( 10*22607*pow(x,-1.124) );
     else  return 500;
   }
+  
   return 0;
 }
 

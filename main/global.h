@@ -79,14 +79,19 @@ int PIDmode = 0;
 #define modeDecide 0
 #define modeStraight 1
 #define modeStop 2
-#define modeTurn 3
+//#define modeTurn 3
 #define modeTurnRight 4
 #define modeTurnLeft 5
 #define modeTurnBack 6
 #define modeStraightOne 7
-#define modeFix 8
-#define modeSwitchStraight 9 //After turn, go straight immediately
+#define modeCountFix 8
+#define modeFrontFix 9
 int turnAgain = false; //For Turning Back
+
+//Fix Modes
+int modeFix = 0;
+#define fixFront 1
+#define fixDiagonals 2
 
 //PID Straight Modes
 int modeFollow = 0;
@@ -145,6 +150,7 @@ int toStart = false;
 
 //Priorities
 int priorityRight = true;
+int checkDistance = false;
 
 
 #endif

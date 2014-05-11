@@ -61,12 +61,12 @@ void loop()
     case 3:
     { //Not currently used
       motorFloat();
-//      delay(500);
+      delay(500);
       runAllSensor();
-//      sensor_read();
-      SerialUSB.print(wheelCountLeft);
-      SerialUSB.print("\t");
-      SerialUSB.println(wheelCountRight);
+      sensor_read();
+//      SerialUSB.print(wheelCountLeft);
+//      SerialUSB.print("\t");
+//      SerialUSB.println(wheelCountRight);
       break;
     }
     case 2:
@@ -87,14 +87,11 @@ void loop()
     {
       runAllSensor();
       
-//      if(PIDmode == modeStraight)
-//      {
-//        modeFollow = followBoth;
-//        PID();
-//        if(distFront < 45) PIDmode = modeStop;
-//        if(wheelCountRight >= 400 && wheelCountLeft >= 400)
-//          solve_maze();
-//      }
+      if(PIDmode == modeStraight)
+      {
+        PID();
+        if(distFront < 100) PIDmode = modeStop;
+      }
       
       if(PIDmode == modeStraightOne)
       {  //Goes Straight One Cell, Will Activate First Everytime
@@ -105,12 +102,12 @@ void loop()
         PIDmode = modeStraightOne;
         if(wheelCountRight >= 440 && wheelCountLeft >= 440)
         {
-          if(distFront < 40)
+          if(distFront < 100)
             PIDmode = modeFrontFix;
           else
             PIDmode = modeStop;
         }
-        if(distFront < 25) PIDmode = modeFrontFix;
+        if(distFront < 120) PIDmode = modeFrontFix;
       }
 
        ///////////////////TURNING///////////////////////////////
@@ -183,10 +180,10 @@ void loop()
           delay(100);
           if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
           {
-//            if(distFront < 40)
-//              PIDmode = modeFrontFix;
-//            else
-//            {
+            if(distFront < 80)
+              PIDmode = modeFrontFix;
+            else
+            {
               PIDmode = modeStop;
               if(turnAgain)
               {
@@ -202,22 +199,21 @@ void loop()
                 else if(turnAgain == modeTurnLeft)
                   PIDmode = modeTurnLeft;
                 turnAgain = false;
-//              }
+              }
             }
           }
         }
       }
       
-      if(PIDmode == modeFrontFix) PIDmode = modeStop;
       if(PIDmode == modeFrontFix)
       {
         runAllSensor();
         PID();
-        if(abs(errorFront) >= 5)
+        if(abs(errorFront) >= 01)
           modeFix = fixFront;
-        else if(abs(errorDiagonal) >= 5)
+        else if(abs(errorDiagonal) >= 1)
           modeFix = fixDiagonals;
-        else if (abs(errorFront) <= 5 && abs(errorDiagonal) <= 5)
+        else if (abs(errorFront) <= 1 && abs(errorDiagonal) <= 1)
         {
           modeFix = fixFront; //Always Starts with Front Fix Next Time
           PIDmode = modeStop;

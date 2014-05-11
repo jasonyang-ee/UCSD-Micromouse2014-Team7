@@ -25,8 +25,8 @@ void PID()
         }
         case followDiagonalLeft:
         {
-          int Kp = 350;
-          int Kd = 5;
+          int Kp = 150;
+          int Kd = 2;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalLeft + Kd*(errorDiagonalLeftDiff)/timeDiff + Ki*errorDiagonalLeftTotal);
     
@@ -37,8 +37,8 @@ void PID()
         }
         case followDiagonalRight:
         {
-          int Kp = 350;
-          int Kd = 5;
+          int Kp = 150;
+          int Kd = 2;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalRight + Kd*(errorDiagonalRightDiff)/timeDiff + Ki*errorDiagonalRightTotal);
     
@@ -53,7 +53,7 @@ void PID()
           //Gain Values for PID
           int Kp = 200;
           int Kd = 5;
-          int Ki = 2;
+          int Ki = 1;
     
           int correction = round(Kp * errorCount + Kd*(errorCountDiff)/timeDiff + Ki*errorCountTotal);
         
@@ -79,10 +79,10 @@ void PID()
       
       int correctionLeft = round(Kp * errorStopLeft + Kd*(errorStopLeftDiff)/.0001 + Ki*errorStopLeftTotal);
 
-      if(correctionRight > 0) correctionRight += 3000;
-      if(correctionRight < 0) correctionRight -= 3000;
-      if(correctionLeft < 0) correctionLeft -= 3000;
-      if(correctionLeft > 0) correctionLeft += 3000;
+      if(correctionRight > 0) correctionRight += 4000;
+      if(correctionRight < 0) correctionRight -= 4000;
+      if(correctionLeft < 0) correctionLeft -= 4000;
+      if(correctionLeft > 0) correctionLeft += 4000;
 
       motorRight_go(correctionRight);
       motorLeft_go(correctionLeft);
@@ -95,11 +95,14 @@ void PID()
         case fixFront:
         {
           //Gain Values for PID
-          int Kp = 1000;
-          int Kd = 0;
+          int Kp = 3000;
+          int Kd = 10;
           int Ki = 0;
     
           int correction = round(Kp * errorFront + Kd*(errorFrontDiff)/timeDiff + Ki*errorFrontTotal);
+          
+          if(correction > 0) correction += 4000;
+          if(correction < 0) correction -= 4000;
         
           motorRight_go(correction);
           motorLeft_go(correction);
@@ -109,14 +112,17 @@ void PID()
         case fixDiagonals:
         {
           //Gain Values for PID
-          int Kp = 1000;
-          int Kd = 0;
+          int Kp = 2000;
+          int Kd = 10;
           int Ki = 0;
-    
+
           int correction = round(Kp * errorDiagonal + Kd*(errorDiagonalDiff)/timeDiff + Ki*errorDiagonalTotal);
+          
+          if(correction > 0) correction += 3000;
+          if(correction < 0) correction -= 3000;
         
-          motorRight_go(correction);
-          motorLeft_go(-correction);
+          motorRight_go(-correction);
+          motorLeft_go(correction);
           break;
         }
       }
@@ -128,20 +134,32 @@ void PID()
 //set PID straight follow state
 void PID_follower()
 { //Needs to Be Tweaked Still
-  if(distDiagonalRight > 95 && distDiagonalLeft > 95 && (distRight > 60 || distLeft > 60))
+  if(distDiagonalRight > 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
+  {
+    wheelCountLeft = 0;
+    wheelCountRight = 0;  
     modeFollow = followEncoder;
-  else if(distDiagonalRight > 95 && distDiagonalLeft < 95 && (distRight > 60 || distLeft > 60))
+  }
+  else if(distDiagonalRight > 180 && distDiagonalLeft < 145 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalLeft;
-    if(distFront<90)
+    if(distFront<150)
+    {
+      wheelCountLeft = 0;
+      wheelCountRight = 0; 
       modeFollow = followEncoder;
+    }
   }
-  else if(distDiagonalRight < 95 && distDiagonalLeft > 95 && (distRight > 60 || distLeft > 60))
+  else if(distDiagonalRight < 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalRight;
-    if(distFront<90)
+    if(distFront<150)
+    {
+      wheelCountLeft = 0;
+      wheelCountRight = 0; 
       modeFollow = followEncoder;
-  } 
+    }
+  }
   else if(distRight < 60 && distLeft < 60)
     modeFollow = followSide;  
 }

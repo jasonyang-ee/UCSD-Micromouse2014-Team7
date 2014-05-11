@@ -21,8 +21,8 @@ volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
-double initialDiagonalLeft = 70;
-double initialDiagonalRight = 80;
+double initialDiagonalLeft = 98;
+double initialDiagonalRight = 135;
 
 //PID error
 int errorFront = 0;

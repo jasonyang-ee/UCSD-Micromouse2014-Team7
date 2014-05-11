@@ -152,7 +152,7 @@ void calculateErrorSide()
 //  if(distLeft > 320)
 //    errorSide = distLeft - distRight - 300;
 //  if(distLeft < 100 && distRight <100)
-    errorSide = (distLeft - distRight);
+    errorSide = (distLeft - distRight) - 10;
   errorSideDiff = errorSide - errorSideLast;
   errorSideTotal += errorSide;
 }
@@ -197,7 +197,7 @@ void calculateErrorStop()
 void calculateErrorFront()
 {
   errorFrontLast = errorFront;
-  errorFront = (distFront - 21.3);
+  errorFront = (distFront - 25);
   errorFrontDiff = errorFront - errorFrontLast;
   errorFrontTotal += errorFront;
 }
@@ -205,7 +205,7 @@ void calculateErrorFront()
 void calculateErrorDiagonal()
 {
   errorDiagonalLast = errorDiagonal;
-  errorDiagonal = ((distDiagonalLeft - distDiagonalRight) - 5);
+  errorDiagonal = ((distDiagonalLeft - distDiagonalRight) - 7);
   errorDiagonalDiff = errorDiagonal - errorDiagonalLast;
   errorDiagonalTotal += errorDiagonal;
 }

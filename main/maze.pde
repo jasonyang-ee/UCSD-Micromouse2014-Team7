@@ -35,6 +35,7 @@ static uint8 mouse_dir = 0;
 static uint8 goal;
 static uint8 maze_size;
 static cell maze[256];
+static cell maze_backup[256];
 
 // set the wall of a cell
 // and the corresponding wall of the cell behind it
@@ -206,6 +207,15 @@ void reset_position()
   mouse_dir = 0;
 }
 
+void copy_maze(cell* src, cell* dst){
+  int i=256;
+  while(i--) dst[i] = src[i];
+}
 
+void restore_maze(){
+  copy_maze(maze_backup, maze);
+}
 
-
+void save_maze(){
+  copy_maze(maze, maze_backup);
+}

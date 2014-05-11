@@ -10,7 +10,7 @@
 #define WALL_EAST 2
 #define WALL_SOUTH 4
 #define WALL_WEST 8
-
+#include <string.h>
 typedef struct{
 uint8 walls   :
   4;
@@ -38,7 +38,7 @@ static uint8 mouse_dir = 0;
 static uint8 goal;
 static uint8 maze_size;
 static cell maze[256];
-static cell maze_backup[256];
+static cell maze_backup[256];  
 
 // set the wall of a cell
 // and the corresponding wall of the cell behind it
@@ -230,3 +230,4 @@ uint8 dist_to_wall(){
   }
   return d;
 }
+

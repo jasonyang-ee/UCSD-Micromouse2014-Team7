@@ -110,23 +110,12 @@ void flood_fill(uint8 cur, uint8 dist){
 // drive the mouse down the distance gradient to the goal
 void solve_maze()
 {
-//  if(checkDistance)
-//  {
-//    int distance = round((wheelCountRight + wheelCountLeft)*.5);
-//    distance = round(distance/440);
-//    for(int i = 0; i < distance; i++)
-//      mouse_loc = LOC_IN_DIR(mouse_loc,mouse_dir);
-//    checkDistance = false;
-//  }    
-    
-
   //if at goal, won't move until position reset.
   if(maze[mouse_loc].is_goal)
   {
     save_maze();
     return;
   }
-  
   
   scan_walls();
   
@@ -139,6 +128,7 @@ void solve_maze()
   }
   
   goal = LOC(8,8);
+  flood_fill(goal,0);
   maze[LOC(8,8)].is_goal = 1;
   maze[LOC(7,8)].is_goal = 1;
   maze[LOC(8,7)].is_goal = 1;
@@ -148,28 +138,10 @@ void solve_maze()
   maze[LOC(7,8)].fill_order = 0;
   maze[LOC(7,7)].fill_order = 0;
 
-  flood_fill(goal,0);
-
   FFF = CELL_IN_DIR(mouse_loc,((mouse_dir + 0)%4)).fill_order;
   FFR = CELL_IN_DIR(mouse_loc,((mouse_dir + 1)%4)).fill_order;
   FFB = CELL_IN_DIR(mouse_loc,((mouse_dir + 2)%4)).fill_order;
   FFL = CELL_IN_DIR(mouse_loc,((mouse_dir + 3)%4)).fill_order;
-
-//    SerialUSB.print(FFL);
-//    SerialUSB.print("\t");
-//    SerialUSB.print(FFB);
-//    SerialUSB.print("\t");
-//    SerialUSB.print(FFF);
-//    SerialUSB.print("\t");
-//    SerialUSB.print(FFR);
-//    SerialUSB.print("\t");
-//    SerialUSB.println(mouse_dir);
-
-//  if(maze[mouse_loc].walls & (1<<0)) SerialUSB.print("North  ");
-//  if(maze[mouse_loc].walls & (1<<1)) SerialUSB.print("East  ");
-//  if(maze[mouse_loc].walls & (1<<3)) SerialUSB.print("West  ");
-//  if(maze[mouse_loc].walls & (1<<2)) SerialUSB.print("South  ");
-//  SerialUSB.println();
 
   wallCase = 0;
 
@@ -211,6 +183,48 @@ void scan_walls()
   }
 }
 
+void quick_solve()
+{
+  //if at goal, won't move until position reset.
+  if(maze[mouse_loc].is_goal)
+  {
+    PIDmode = modeStop;
+    return;
+  }
+  
+  scan_walls();
+
+  FFF = CELL_IN_DIR(mouse_loc,((mouse_dir + 0)%4)).fill_order;
+  FFR = CELL_IN_DIR(mouse_loc,((mouse_dir + 1)%4)).fill_order;
+  FFB = CELL_IN_DIR(mouse_loc,((mouse_dir + 2)%4)).fill_order;
+  FFL = CELL_IN_DIR(mouse_loc,((mouse_dir + 3)%4)).fill_order;
+
+  wallCase = 0;
+
+  if(maze[mouse_loc].walls & (1<<((mouse_dir + 0)%4))) wallCase += wallFront;
+  if(maze[mouse_loc].walls & (1<<((mouse_dir + 1)%4))) wallCase += wallRight;
+  if(maze[mouse_loc].walls & (1<<((mouse_dir + 3)%4))) wallCase += wallLeft;
+  if(maze[mouse_loc].walls & (1<<((mouse_dir + 2)%4))) FFB = 255;
+
+  decide();
+  
+  if(PIDmode == modeStraightOne) PIDmode = modeStraight;
+
+  if(PIDmode == modeStraight)
+    mouse_loc = LOC_IN_DIR(mouse_loc,mouse_dir);
+  else
+    PIDmode = modeStop;
+    
+  wheelCountRight = 0;
+  wheelCountLeft = 0;
+  errorCountTotal = 0;
+}
+
+void speed_run()
+{
+}
+  
+
 void reset_position()
 {
   mouse_loc = LOC(0,0);
@@ -223,20 +237,18 @@ void restore_maze(){
   while(i--) maze[i] = maze_backup[i];
 }
 
-
 void save_maze(){
   int i = 256;
   while(i--) maze_backup[i] = maze[i];
 }
 
 
-uint8 dist_to_wall(){
-  uint8 l = mouse_loc;
-  uint8 d = 0;
-  while(!WALL_IN_DIR(l, mouse_dir)){
-    d++;
-    l = LOC_IN_DIR(l, mouse_dir);
+uint8 dist_to_turn(){
+  uint8 distance = 0;
+  while(maze[LOC_IN_DIR(mouse_loc, mouse_dir)].fill_order < maze[mouse_loc].fill_order){
+    distance++;
+    mouse_loc = LOC_IN_DIR(mouse_loc, mouse_dir);
   }
-  return d;
+  return distance;
 }
 

@@ -90,9 +90,11 @@ void loop()
       
       if(PIDmode == modeStraight)
       {
+        //PID_follower();
         PID();
-        if(distFront < 100) PIDmode = modeStop;
-        //if(wheelCountRight > 3500) modeFollow = followDiagonalLeft;
+//        if(((wheelCountRight + wheelCountLeft)/2) >= 435)
+//          quick_solve();
+        if(distFront < 100) PIDmode = modeFrontFix;
       }
       
       if(PIDmode == modeStraightOne)
@@ -101,7 +103,7 @@ void loop()
         PID_follower();
         PID();
         PIDmode = modeStraightOne;
-        if(wheelCountRight >= 445 && wheelCountLeft >= 445)
+        if(wheelCountRight >= 450 && wheelCountLeft >= 450)
         {
           if(distFront < 100)
             PIDmode = modeFrontFix;
@@ -116,20 +118,20 @@ void loop()
       {
         motorLeft_go (20000);
         motorRight_go (-20000);
-        if (wheelCountLeft >= 171)
+        if (wheelCountLeft >= 168)
         {
           motorLeft_go(0);
         }
-        if(wheelCountRight <= -171)
+        if(wheelCountRight <= -168)
         {
           motorRight_go(0);
         }
-        if(wheelCountRight <= -171 && wheelCountLeft >= 171)
+        if(wheelCountRight <= -168 && wheelCountLeft >= 168)
         {
           motorRight_go(0);
           motorLeft_go(0);
-          countsNeededLeft = 171;
-          countsNeededRight = -171;
+          countsNeededLeft = 168;
+          countsNeededRight = -168;
           PIDmode = modeCountFix;
         }
        }
@@ -138,20 +140,20 @@ void loop()
       {
         motorRight_go (20000);
         motorLeft_go (-20000);
-        if (wheelCountRight >= 171)
+        if (wheelCountRight >= 160)
         {
           motorRight_go(0);
         }
-        if(wheelCountLeft <= -171)
+        if(wheelCountLeft <= -160)
         {
           motorLeft_go(0);
         }
-        if(wheelCountRight >= 171 && wheelCountLeft <= -171)
+        if(wheelCountRight >= 160 && wheelCountLeft <= -160)
         {
           motorRight_go(0);
           motorLeft_go(0);
-          countsNeededLeft = -171;
-          countsNeededRight = 171;
+          countsNeededLeft = -160;
+          countsNeededRight = 160;
           PIDmode = modeCountFix;
         }
       }
@@ -178,7 +180,7 @@ void loop()
         {
           motorLeft_go(0);
           motorRight_go(0);
-          delay(100);
+          //delay(100);
           if(wheelCountRight == countsNeededRight && wheelCountLeft == countsNeededLeft)
           {
             if(distFront < 80)
@@ -190,7 +192,7 @@ void loop()
               {
                 motorLeft_go(0);
                 motorRight_go(0);
-                delay(200);
+                //delay(100);
                 wheelCountLeft = 0;
                 wheelCountRight = 0;
                 errorStopRightTotal = 0;
@@ -222,7 +224,7 @@ void loop()
           {
             motorLeft_go(0);
             motorRight_go(0);
-            delay(200);
+            //delay(100);
             wheelCountLeft = 0;
             wheelCountRight = 0;
             errorStopRightTotal = 0;
@@ -240,7 +242,7 @@ void loop()
       {
         motorLeft_go(0);
         motorRight_go(0);
-        delay(100);
+        //delay(50);
         wheelCountLeft = 0;
         wheelCountRight = 0;
         errorCountTotal = 0;

@@ -25,8 +25,6 @@ void runAllSensor()
   else movement = 1;
   
   //find PID error
-  calculateErrorRight();
-  calculateErrorLeft();
   calculateErrorSide();
   calculateErrorDiagonalLeft();
   calculateErrorDiagonalRight();
@@ -89,21 +87,21 @@ double convertDistance(int volt, int c)
   //Front
   if(c==1)
   {
-    if(volt>190)  return (10*13409*pow(x,-1.052));
+    if(volt>190)  return (10*29367*pow(x,-1.177));
     else  return 500;
   }
   
   //Left
   if(c==2)
   {
-    if(volt>340)  return (10*8000000*pow(x,-1.919));
+    if(volt>340)  return (10*10000000*pow(x,-1.944));
     else return 500;
   }
   
   //Right
   if(c==3)
   {
-    if(volt>800)  return (10*400000000.0*pow(x,-2.382));
+    if(volt>800)  return (10*500000000.0*pow(x,-2.376));
     else return 500;
   }
   
@@ -111,14 +109,14 @@ double convertDistance(int volt, int c)
   if(c==4)
   {
 
-    if(volt>230)  return (10*2583*pow(x,-0.793));
+    if(volt>230)  return (10*144269*pow(x,-1.375));
     else  return 500;
   }
   
   //Front Right
   if(c==5)
   {
-    if(volt>250)  return (10*22607*pow(x,-1.124));
+    if(volt>250)  return (10*8558.4*pow(x,-0.999));
     else  return 500;
   }
   
@@ -128,31 +126,10 @@ double convertDistance(int volt, int c)
 
 
 //error for PID
-void calculateErrorRight()
-{
-  errorRightLast = errorRight;
-  errorRight = ((distDiagonalRight - distRight)- 118);
-  errorRightDiff = errorRight - errorRightLast;
-  errorRightTotal += errorRight;
-}
-
-void calculateErrorLeft()
-{
-  errorLeftLast = errorLeft;
-  errorLeft = ((distDiagonalLeft - distLeft)-50);
-  errorLeftDiff = errorLeft - errorLeftLast;
-  errorLeftTotal += errorLeft;
-}
-
 void calculateErrorSide()
 {
   errorSideLast = errorSide;
-//  if(distLeft > 350)
-//    errorSide = distLeft-340-distRight;
-//  if(distLeft > 320)
-//    errorSide = distLeft - distRight - 300;
-//  if(distLeft < 100 && distRight <100)
-    errorSide = (distLeft - distRight) - 10;
+  errorSide = (distLeft - distRight) + 3;
   errorSideDiff = errorSide - errorSideLast;
   errorSideTotal += errorSide;
 }
@@ -197,7 +174,7 @@ void calculateErrorStop()
 void calculateErrorFront()
 {
   errorFrontLast = errorFront;
-  errorFront = (distFront - 26);
+  errorFront = (distFront - 23);
   errorFrontDiff = errorFront - errorFrontLast;
   errorFrontTotal += errorFront;
 }
@@ -205,7 +182,7 @@ void calculateErrorFront()
 void calculateErrorDiagonal()
 {
   errorDiagonalLast = errorDiagonal;
-  errorDiagonal = ((distDiagonalLeft - distDiagonalRight));
+  errorDiagonal = ((distDiagonalLeft - distDiagonalRight) + 12);
   errorDiagonalDiff = errorDiagonal - errorDiagonalLast;
   errorDiagonalTotal += errorDiagonal;
 }

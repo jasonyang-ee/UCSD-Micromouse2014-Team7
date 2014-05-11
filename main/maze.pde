@@ -18,9 +18,10 @@ uint8 visited :
   1;
 uint8 is_goal :
   1;
-uint8 vis_dir :
-  2;
-  uint8 fill_order;
+uint8 turn :
+  1;
+uint8 turn_dir:1;
+uint8 fill_order;
 } 
 cell;
 
@@ -39,7 +40,7 @@ static uint8 goal;
 static uint8 maze_size;
 static cell maze[256];
 static cell maze_backup[256];  
-
+static uint8 turn_count[256];
 // set the wall of a cell
 // and the corresponding wall of the cell behind it
 void set_cell_wall(uint8 c, uint8 d){
@@ -245,10 +246,48 @@ void save_maze(){
 
 uint8 dist_to_turn(){
   uint8 distance = 0;
-  while(maze[LOC_IN_DIR(mouse_loc, mouse_dir)].fill_order < maze[mouse_loc].fill_order){
+  while(!(maze[mouse_loc].turn)){
     distance++;
     mouse_loc = LOC_IN_DIR(mouse_loc, mouse_dir);
   }
   return distance;
+}
+
+uint8 num_turns_from(uint8 cur, uint8 dir){
+  uint8 best = 255;
+  if(maze[cur].is_goal) return 0;
+  //  printf("Checking %02X, facing %d\n", cur, dir);
+  for(uint8 i=0;i<4;i++){
+    if(!(maze[cur].walls & (1<<i)) && CELL_IN_DIR(cur,i).fill_order < best){
+      best = CELL_IN_DIR(cur,i).fill_order;
+    }
+  }
+  //  printf("Best fill order is %d\n", best);
+  uint8 nturns[4];
+  for(uint8 i=0;i<4;i++){
+    if(!(maze[cur].walls & (1<<i)) && CELL_IN_DIR(cur,i).fill_order == best){
+      nturns[i] = num_turns_from(LOC_IN_DIR(cur,i), i);
+      if(i != dir) nturns[i]++;
+    } else {
+      nturns[i] = 128;
+    }
+  }
+  best = 128;
+  uint8 turn_dir, turn = 0;
+  for(uint8 i=0;i<4;i++){   
+    if(nturns[i] < best){
+      best = nturns[i];
+      turn_dir = i;
+    }
+    //    printf("Starting from %02X, facing %d, going in direction %d, has %d turns\n", cur, dir, i, nturns[i]);
+    
+  }
+  if(turn_dir != dir){
+    maze[cur].turn = 1;
+    if(turn_dir - dir == 1) maze[cur].turn_dir = 0;
+    else maze[cur].turn_dir = 1;
+  }
+  turn_count[cur] = best;
+  return best;
 }
 

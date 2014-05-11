@@ -135,31 +135,19 @@ void PID()
 void PID_follower()
 { //Needs to Be Tweaked Still
   if(distDiagonalRight > 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
-  {
-    wheelCountLeft = 0;
-    wheelCountRight = 0;  
     modeFollow = followEncoder;
-  }
   else if(distDiagonalRight > 180 && distDiagonalLeft < 145 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalLeft;
     if(distFront<150)
-    {
-      wheelCountLeft = 0;
-      wheelCountRight = 0; 
       modeFollow = followEncoder;
-    }
   }
   else if(distDiagonalRight < 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
   {
     modeFollow = followDiagonalRight;
     if(distFront<150)
-    {
-      wheelCountLeft = 0;
-      wheelCountRight = 0; 
       modeFollow = followEncoder;
-    }
-  }
+  } 
   else if(distRight < 60 && distLeft < 60)
     modeFollow = followSide;  
 }

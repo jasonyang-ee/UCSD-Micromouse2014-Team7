@@ -131,7 +131,7 @@ double convertDistance(int volt, int c)
 void calculateErrorRight()
 {
   errorRightLast = errorRight;
-  errorRight = ((distDiagonalRight/distRight)-7);
+  errorRight = ((distDiagonalRight - distRight)- 118);
   errorRightDiff = errorRight - errorRightLast;
   errorRightTotal += errorRight;
 }
@@ -139,7 +139,7 @@ void calculateErrorRight()
 void calculateErrorLeft()
 {
   errorLeftLast = errorLeft;
-  errorLeft = ((distDiagonalLeft/distLeft)-7);
+  errorLeft = ((distDiagonalLeft - distLeft)-50);
   errorLeftDiff = errorLeft - errorLeftLast;
   errorLeftTotal += errorLeft;
 }

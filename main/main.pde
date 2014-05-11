@@ -92,13 +92,13 @@ void loop()
       {
         PID();
         if(distFront < 100) PIDmode = modeStop;
+        //if(wheelCountRight > 3500) modeFollow = followDiagonalLeft;
       }
       
       if(PIDmode == modeStraightOne)
       {  //Goes Straight One Cell, Will Activate First Everytime
         PIDmode = modeStraight;
         PID_follower();
-        //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
         if(wheelCountRight >= 445 && wheelCountLeft >= 445)
@@ -209,12 +209,13 @@ void loop()
       if(PIDmode == modeFrontFix)
       {
         runAllSensor();
-        PID();
-        if(abs(errorFront) >= 01)
+        if(abs(errorFront) >= 1)
           modeFix = fixFront;
         else if(abs(errorDiagonal) >= 1)
           modeFix = fixDiagonals;
-        else if (abs(errorFront) <= 1 && abs(errorDiagonal) <= 1)
+        PID();
+        
+        if (abs(errorFront) <= 1 && abs(errorDiagonal) <= 1)
         {
           modeFix = fixFront; //Always Starts with Front Fix Next Time
           PIDmode = modeStop;
@@ -235,6 +236,18 @@ void loop()
           }
         }
       }
+      
+//      if(PIDmode == modeSideFix)
+//      {
+//        runAllSensor();
+//        PID();
+//        if((abs(errorLeft) <= 1) || (abs(errorRight)<= 1))
+//        {
+//          countOffset = wheelCountLeft - wheelCountRight;
+//          PIDmode == modeStraightOne;
+//        }
+//      }
+        
         
       if(PIDmode == modeStop)
       {

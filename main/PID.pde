@@ -25,26 +25,26 @@ void PID()
         }
         case followDiagonalLeft:
         {
-          int Kp = 100;
-          int Kd = 2;
+          int Kp = 150;
+          int Kd = 8;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalLeft + Kd*(errorDiagonalLeftDiff)/timeDiff + Ki*errorDiagonalLeftTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
-          motorRight_go(35000 + correction);
-          motorLeft_go(35000 - correction);
+          motorRight_go(18000 + correction);
+          motorLeft_go(18000 - correction);
           break;
         }
         case followDiagonalRight:
         {
-          int Kp = 100;
-          int Kd = 2;
+          int Kp = 150;
+          int Kd = 8;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalRight + Kd*(errorDiagonalRightDiff)/timeDiff + Ki*errorDiagonalRightTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
-          motorRight_go(35000 - correction);
-          motorLeft_go(35000 + correction);
+          motorRight_go(18000 - correction);
+          motorLeft_go(18000 + correction);
           break;
         }
         case followEncoder:
@@ -96,7 +96,7 @@ void PID()
         {
           //Gain Values for PID
           int Kp = 3000;
-          int Kd = 10;
+          int Kd = 2;
           int Ki = 0;
     
           int correction = round(Kp * errorFront + Kd*(errorFrontDiff)/timeDiff + Ki*errorFrontTotal);
@@ -113,7 +113,7 @@ void PID()
         {
           //Gain Values for PID
           int Kp = 2000;
-          int Kd = 10;
+          int Kd = 2;
           int Ki = 0;
 
           int correction = round(Kp * errorDiagonal + Kd*(errorDiagonalDiff)/timeDiff + Ki*errorDiagonalTotal);
@@ -135,31 +135,33 @@ void PID()
 void PID_follower()
 { //Needs to Be Tweaked Still
   
-//  if(distDiagonalRight > 280 && distDiagonalLeft > 170 && (distRight > 70 || distLeft > 80))
-//    modeFollow = followEncoder;
-//  else if(distDiagonalRight > 280 && distDiagonalLeft < 170 && (distLeft < 80))
-//  {
-//    modeFollow = followDiagonalLeft;
-//    if(distFront<150)
-//      modeFollow = followEncoder;
-//  }
-//  else if(distDiagonalRight < 280 && distDiagonalLeft > 170 && (distRight < 70))
-//  {
-//    modeFollow = followDiagonalRight;
-//    if(distFront<150)
-//      modeFollow = followEncoder;
-//  }
-//  else if(distRight < 70 && distLeft < 80)
-//    modeFollow = followSide;  
-
-
-  if(distLeft < 80 && distRight < 80)
-    modeFollow = followSide;
-  else
+  if(distDiagonalRight > 290 && distDiagonalLeft > 170 && (distRight > 70 || distLeft > 80))
     modeFollow = followEncoder;
+  else if(distDiagonalRight > 290 && distDiagonalLeft < 170 && (distLeft < 80))
+  {
+    modeFollow = followDiagonalLeft;
+    if(distFront<150)
+      modeFollow = followEncoder;
+  }
+  else if(distDiagonalRight < 290 && distDiagonalLeft > 170 && (distRight < 70))
+  {
+    modeFollow = followDiagonalRight;
+    if(distFront<150)
+      modeFollow = followEncoder;
+  }
+  else if(distRight < 70 && distLeft < 80)
+    modeFollow = followSide;  
+
+
+//  if(distLeft < 80 && distRight < 80)
+//    modeFollow = followSide;
+//  else
+//    modeFollow = followEncoder;
     
-
-
+//  if((((wheelCountRight + wheelCountLeft)/2) <= 80) || (((wheelCountRight + wheelCountLeft)/2) >= 370))
+//      modeFollow = followEncoder;
+      
+      
   if(modeFollowLast != modeFollow)
   {
     if(modeFollow == followEncoder)

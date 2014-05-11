@@ -8,7 +8,7 @@
 #define WALL_EAST 2
 #define WALL_SOUTH 4
 #define WALL_WEST 8
-
+#include <string.h>
 typedef struct{
 uint8 walls   :
   4;
@@ -207,15 +207,10 @@ void reset_position()
   mouse_dir = 0;
 }
 
-void copy_maze(cell* src, cell* dst){
-  int i=256;
-  while(i--) dst[i] = src[i];
-}
-
 void restore_maze(){
-  copy_maze(maze_backup, maze);
+  memcpy(maze, maze_backup, 512);
 }
 
 void save_maze(){
-  copy_maze(maze, maze_backup);
+  memcpy(maze_backup, maze, 512);
 }

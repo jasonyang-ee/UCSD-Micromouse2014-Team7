@@ -143,6 +143,10 @@ void solve_maze()
   maze[LOC(7,8)].is_goal = 1;
   maze[LOC(8,7)].is_goal = 1;
   maze[LOC(7,7)].is_goal = 1;
+  maze[LOC(8,8)].fill_order = 0;
+  maze[LOC(7,8)].fill_order = 0;
+  maze[LOC(7,8)].fill_order = 0;
+  maze[LOC(7,7)].fill_order = 0;
 
   flood_fill(goal,0);
 
@@ -213,13 +217,18 @@ void reset_position()
   mouse_dir = 0;
 }
 
+
 void restore_maze(){
-  memcpy(maze, maze_backup, 512);
+  int i = 256;
+  while(i--) maze[i] = maze_backup[i];
 }
 
+
 void save_maze(){
-  memcpy(maze_backup, maze, 512);
+  int i = 256;
+  while(i--) maze_backup[i] = maze[i];
 }
+
 
 uint8 dist_to_wall(){
   uint8 l = mouse_loc;

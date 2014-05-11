@@ -156,10 +156,6 @@ short compass_raw_y = 0;
 short compass_raw_z = 0;
 short compass_raw_x = 0;
 
-//FloodFill Directions
-int toCenter = false;
-int toStart = false;
-
 //Priorities
 int priorityRight = true;
 int checkDistance = false;

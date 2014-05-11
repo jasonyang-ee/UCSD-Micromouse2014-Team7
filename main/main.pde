@@ -51,7 +51,7 @@ void setup()
 void loop()
 {
   
-  //if(systemMode != board_switch()) delay(5000);
+  if(systemMode != board_switch()) delay(5000);
   
   systemMode = board_switch();
   board_display();
@@ -72,14 +72,14 @@ void loop()
     }
     case 2:
     {
-//      motorLeft_go(4000);
-//      motorRight_go(4000);
-      //Switches to Left Priority, Cannot Switch Back
-      if(priorityRight) priorityRight = false;
+      motorFloat();
+      restore_maze();
       break;
     }
     case 1:
     {
+      motorFloat();
+      PIDmode = modeStop;
       reset_position();
       break;
     }
@@ -214,7 +214,6 @@ void loop()
         else if(abs(errorDiagonal) >= 1)
           modeFix = fixDiagonals;
         PID();
-        
         if (abs(errorFront) <= 1 && abs(errorDiagonal) <= 1)
         {
           modeFix = fixFront; //Always Starts with Front Fix Next Time
@@ -236,18 +235,6 @@ void loop()
           }
         }
       }
-      
-//      if(PIDmode == modeSideFix)
-//      {
-//        runAllSensor();
-//        PID();
-//        if((abs(errorLeft) <= 1) || (abs(errorRight)<= 1))
-//        {
-//          countOffset = wheelCountLeft - wheelCountRight;
-//          PIDmode == modeStraightOne;
-//        }
-//      }
-        
         
       if(PIDmode == modeStop)
       {
@@ -260,6 +247,7 @@ void loop()
         errorStopRightTotal = 0;
         errorStopLeftTotal = 0;
         countOffset = 0;
+        
         if(modeSave)
         { //For Reverting Back to Original Turn Needed
           PIDmode = modeSave;

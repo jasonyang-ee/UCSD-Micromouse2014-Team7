@@ -19,32 +19,32 @@ void PID()
           int correction = round(Kp * errorSide + Kd*(errorSideDiff)/timeDiff + Ki*errorSideTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
-          motorRight_go(40000 + correction);
-          motorLeft_go(40000 - correction);
+          motorRight_go(35000 + correction);
+          motorLeft_go(35000 - correction);
           break;
         }
         case followDiagonalLeft:
         {
-          int Kp = 150;
-          int Kd = 8;
+          int Kp = 1300;
+          int Kd = 12;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalLeft + Kd*(errorDiagonalLeftDiff)/timeDiff + Ki*errorDiagonalLeftTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
-          motorRight_go(18000 + correction);
-          motorLeft_go(18000 - correction);
+          motorRight_go(35000 + correction);
+          motorLeft_go(35000 - correction);
           break;
         }
         case followDiagonalRight:
         {
-          int Kp = 150;
-          int Kd = 8;
+          int Kp = 1300;
+          int Kd = 12;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalRight + Kd*(errorDiagonalRightDiff)/timeDiff + Ki*errorDiagonalRightTotal);
     
           //positive correction corresponds to a left error, negative correction corresponds to a right error
-          motorRight_go(18000 - correction);
-          motorLeft_go(18000 + correction);
+          motorRight_go(35000 - correction);
+          motorLeft_go(35000 + correction);
           break;
         }
         case followEncoder:
@@ -95,8 +95,8 @@ void PID()
         case fixFront:
         {
           //Gain Values for PID
-          int Kp = 3000;
-          int Kd = 2;
+          int Kp = 2000;
+          int Kd = 45;
           int Ki = 0;
     
           int correction = round(Kp * errorFront + Kd*(errorFrontDiff)/timeDiff + Ki*errorFrontTotal);
@@ -153,22 +153,22 @@ void PID_follower()
     modeFollow = followSide;  
 
 
-//  if(distLeft < 80 && distRight < 80)
+//  if((distLeft < 80 && distRight < 80) && (distDiagonalRight < 290) && (distDiagonalLeft < 170))
 //    modeFollow = followSide;
 //  else
 //    modeFollow = followEncoder;
     
-//  if((((wheelCountRight + wheelCountLeft)/2) <= 80) || (((wheelCountRight + wheelCountLeft)/2) >= 370))
-//      modeFollow = followEncoder;
-      
+
+  if((((wheelCountRight + wheelCountLeft)/2) < 50) || (((wheelCountRight + wheelCountLeft)/2) > 250)) modeFollow = followEncoder;
       
   if(modeFollowLast != modeFollow)
   {
     if(modeFollow == followEncoder)
     {
       countOffset = wheelCountLeft - wheelCountRight;
-      calculateErrorCount();
+      runAllSensor();
     }
   }
+    
   modeFollowLast = modeFollow;
 }

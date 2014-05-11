@@ -29,13 +29,14 @@ cell;
 #define LOC(x, y) (((x)<<4)|((y)&15))
 #define LOC_IN_DIR(l,d) LOC(LOC_X(l)+DIR_DX(d),LOC_Y(l)+DIR_DY(d))
 #define CELL_IN_DIR(l,d) maze[LOC_IN_DIR(l,d)]
+#define WALL_IN_DIR(c,d) maze[c].walls & (1<<(d))
 
 static uint8 mouse_loc = 0;
 static uint8 mouse_dir = 0;
 static uint8 goal;
 static uint8 maze_size;
 static cell maze[256];
-static cell maze_backup[256];
+static cell maze_backup[256];  
 
 // set the wall of a cell
 // and the corresponding wall of the cell behind it
@@ -213,4 +214,14 @@ void restore_maze(){
 
 void save_maze(){
   memcpy(maze_backup, maze, 512);
+}
+
+uint8 dist_to_wall(){
+  uint8 l = mouse_loc;
+  uint8 d = 0;
+  while(!WALL_IN_DIR(l, mouse_dir)){
+    d++;
+    l = CELL_IN_DIR(l, mouse_dir);
+  }
+  return d;
 }

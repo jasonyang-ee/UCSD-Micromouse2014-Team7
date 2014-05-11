@@ -4,6 +4,8 @@
 //            S          2
 //======================================
 
+#include <string.h>
+
 #define WALL_NORTH 1
 #define WALL_EAST 2
 #define WALL_SOUTH 4
@@ -29,6 +31,7 @@ cell;
 #define LOC(x, y) (((x)<<4)|((y)&15))
 #define LOC_IN_DIR(l,d) LOC(LOC_X(l)+DIR_DX(d),LOC_Y(l)+DIR_DY(d))
 #define CELL_IN_DIR(l,d) maze[LOC_IN_DIR(l,d)]
+#define WALL_IN_DIR(c,d) maze[c].walls & (1<<(d))
 
 static uint8 mouse_loc = 0;
 static uint8 mouse_dir = 0;
@@ -119,7 +122,10 @@ void solve_maze()
 
   //if at goal, won't move until position reset.
   if(maze[mouse_loc].is_goal)
+  {
+    save_maze();
     return;
+  }
   
   
   scan_walls();
@@ -207,15 +213,20 @@ void reset_position()
   mouse_dir = 0;
 }
 
-void copy_maze(cell* src, cell* dst){
-  int i=256;
-  while(i--) dst[i] = src[i];
-}
-
 void restore_maze(){
-  copy_maze(maze_backup, maze);
+  memcpy(maze, maze_backup, 512);
 }
 
 void save_maze(){
-  copy_maze(maze, maze_backup);
+  memcpy(maze_backup, maze, 512);
+}
+
+uint8 dist_to_wall(){
+  uint8 l = mouse_loc;
+  uint8 d = 0;
+  while(!WALL_IN_DIR(l, mouse_dir)){
+    d++;
+    l = LOC_IN_DIR(l, mouse_dir);
+  }
+  return d;
 }

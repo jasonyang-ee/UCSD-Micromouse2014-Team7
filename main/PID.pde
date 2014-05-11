@@ -25,7 +25,7 @@ void PID()
         }
         case followDiagonalLeft:
         {
-          int Kp = 150;
+          int Kp = 100;
           int Kd = 2;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalLeft + Kd*(errorDiagonalLeftDiff)/timeDiff + Ki*errorDiagonalLeftTotal);
@@ -37,7 +37,7 @@ void PID()
         }
         case followDiagonalRight:
         {
-          int Kp = 150;
+          int Kp = 100;
           int Kd = 2;
           int Ki = 0;
           int correction = round(Kp * errorDiagonalRight + Kd*(errorDiagonalRightDiff)/timeDiff + Ki*errorDiagonalRightTotal);
@@ -134,20 +134,39 @@ void PID()
 //set PID straight follow state
 void PID_follower()
 { //Needs to Be Tweaked Still
-  if(distDiagonalRight > 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
+  
+//  if(distDiagonalRight > 280 && distDiagonalLeft > 170 && (distRight > 70 || distLeft > 80))
+//    modeFollow = followEncoder;
+//  else if(distDiagonalRight > 280 && distDiagonalLeft < 170 && (distLeft < 80))
+//  {
+//    modeFollow = followDiagonalLeft;
+//    if(distFront<150)
+//      modeFollow = followEncoder;
+//  }
+//  else if(distDiagonalRight < 280 && distDiagonalLeft > 170 && (distRight < 70))
+//  {
+//    modeFollow = followDiagonalRight;
+//    if(distFront<150)
+//      modeFollow = followEncoder;
+//  }
+//  else if(distRight < 70 && distLeft < 80)
+//    modeFollow = followSide;  
+
+
+  if(distLeft < 80 && distRight < 80)
+    modeFollow = followSide;
+  else
     modeFollow = followEncoder;
-  else if(distDiagonalRight > 180 && distDiagonalLeft < 145 && (distRight > 60 || distLeft > 60))
+    
+
+
+  if(modeFollowLast != modeFollow)
   {
-    modeFollow = followDiagonalLeft;
-    if(distFront<150)
-      modeFollow = followEncoder;
+    if(modeFollow == followEncoder)
+    {
+      countOffset = wheelCountLeft - wheelCountRight;
+      calculateErrorCount();
+    }
   }
-  else if(distDiagonalRight < 180 && distDiagonalLeft > 145 && (distRight > 60 || distLeft > 60))
-  {
-    modeFollow = followDiagonalRight;
-    if(distFront<150)
-      modeFollow = followEncoder;
-  } 
-  else if(distRight < 60 && distLeft < 60)
-    modeFollow = followSide;  
+  modeFollowLast = modeFollow;
 }

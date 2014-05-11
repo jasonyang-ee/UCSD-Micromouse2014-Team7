@@ -15,13 +15,15 @@ volatile int encoderTimeRight = 0;
 volatile int lastTickLeft = 0;
 volatile int lastTickRight = 0;
 
+int countOffset = 0;
+
 //Sensor Values
 volatile double distFront = 0;
 volatile double distLeft = 0;
 volatile double distRight = 0;
 volatile double distDiagonalLeft = 0;
 volatile double distDiagonalRight = 0;
-double initialDiagonalLeft = 98;
+double initialDiagonalLeft = 105;
 double initialDiagonalRight = 135;
 
 //PID error
@@ -94,6 +96,7 @@ int PIDmode = 0;
 #define modeCountFix 8
 #define modeFrontFix 9
 int turnAgain = false; //For Turning Back
+int modeSave = false; //Saving PID Modes
 
 //Fix Modes
 int modeFix = 0;
@@ -109,6 +112,8 @@ int modeFollow = 0;
 #define followLeft 5
 #define followEncoder 6
 #define followNone 7
+
+int modeFollowLast = 0;
 
 //PID Turn Modes
 int turnState = 0;
@@ -158,6 +163,5 @@ int toStart = false;
 //Priorities
 int priorityRight = true;
 int checkDistance = false;
-
 
 #endif

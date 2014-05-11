@@ -64,6 +64,7 @@ void loop()
       delay(500);
       runAllSensor();
       sensor_read();
+      sensor_calibration();
 //      SerialUSB.print(wheelCountLeft);
 //      SerialUSB.print("\t");
 //      SerialUSB.println(wheelCountRight);
@@ -100,7 +101,7 @@ void loop()
         //modeFollow = followEncoder;
         PID();
         PIDmode = modeStraightOne;
-        if(wheelCountRight >= 440 && wheelCountLeft >= 440)
+        if(wheelCountRight >= 445 && wheelCountLeft >= 445)
         {
           if(distFront < 100)
             PIDmode = modeFrontFix;
@@ -245,7 +246,34 @@ void loop()
         errorCountTotal = 0;
         errorStopRightTotal = 0;
         errorStopLeftTotal = 0;
-        solve_maze();
+        countOffset = 0;
+        if(modeSave)
+        { //For Reverting Back to Original Turn Needed
+          PIDmode = modeSave;
+          modeSave = false;
+          break;
+        }
+        
+        if(PIDmode == modeStop) solve_maze();
+        
+        if(PIDmode == modeTurnRight)
+        { //For Fixing Position If Offsetted
+          if((distLeft < 130) && (distLeft > 35))
+          {
+            modeSave = PIDmode;
+            PIDmode = modeTurnLeft;
+            turnAgain = modeTurnRight;
+          }
+        }
+        if(PIDmode == modeTurnLeft)
+        { //For Fixing Position If Offsetted
+          if((distRight < 80) && (distRight > 25))
+          {
+            modeSave = PIDmode;
+            PIDmode = modeTurnRight;
+            turnAgain = modeTurnLeft;
+          }
+        }
         //If At Goal, will Stop Indefinitely Until Switch Case
         //PIDmode = modeTurnBack ;
       }

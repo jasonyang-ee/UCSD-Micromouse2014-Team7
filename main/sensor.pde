@@ -96,14 +96,14 @@ double convertDistance(int volt, int c)
   //Left
   if(c==2)
   {
-    if(volt>340)  return (10*50000000*pow(x,-2.139));
+    if(volt>340)  return (10*8000000*pow(x,-1.919));
     else return 500;
   }
   
   //Right
   if(c==3)
   {
-    if(volt>800)  return (10*10000000*pow(x,-1.935));
+    if(volt>800)  return (10*400000000.0*pow(x,-2.382));
     else return 500;
   }
   
@@ -176,7 +176,7 @@ void calculateErrorDiagonalRight()
 void calculateErrorCount()
 {
   errorCountLast = errorCount;
-  errorCount = (wheelCountLeft - wheelCountRight);
+  errorCount = (wheelCountLeft - wheelCountRight) - countOffset;
   errorCountDiff = errorCount - errorCountLast;
   errorCountTotal += errorCount;
 }
@@ -197,7 +197,7 @@ void calculateErrorStop()
 void calculateErrorFront()
 {
   errorFrontLast = errorFront;
-  errorFront = (distFront - 25);
+  errorFront = (distFront - 26);
   errorFrontDiff = errorFront - errorFrontLast;
   errorFrontTotal += errorFront;
 }
@@ -205,7 +205,7 @@ void calculateErrorFront()
 void calculateErrorDiagonal()
 {
   errorDiagonalLast = errorDiagonal;
-  errorDiagonal = ((distDiagonalLeft - distDiagonalRight) - 7);
+  errorDiagonal = ((distDiagonalLeft - distDiagonalRight));
   errorDiagonalDiff = errorDiagonal - errorDiagonalLast;
   errorDiagonalTotal += errorDiagonal;
 }
